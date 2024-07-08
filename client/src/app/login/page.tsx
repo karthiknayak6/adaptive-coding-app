@@ -9,7 +9,7 @@ import { BallTriangle } from "react-loader-spinner";
 
 // Define the schema using zod
 const loginSchema = z.object({
-  username: z.string(),
+  email: z.string().email(),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
@@ -33,14 +33,14 @@ const Login: React.FC = () => {
     setIsLoading(true);
     try {
       // Your login logic here
-      const response = await axios.post('/api/login', data);
+      const response = await axios.post('http://localhost:8080/login', data);
       if (response.status === 200) {
         setIsLoggedIn(true);
         reset();
       }
     } catch (error) {
       console.error("Login error: ", error);
-      setError("username", {
+      setError("email", {
         type: "manual",
         message: "Login failed",
       });
@@ -68,36 +68,36 @@ const Login: React.FC = () => {
 
   return (
     <div>
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="max-w-md w-full p-8 space-y-8 bg-white rounded-lg shadow-md">
-          <h2 className="text-3xl font-extrabold text-center text-gray-900">
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="max-w-md w-full p-8 space-y-8 bg-[#332f2f] text-orange-100 rounded-lg shadow-md">
+          <h2 className="text-3xl font-extrabold text-center">
             Login
           </h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
               <label
-                htmlFor="username"
-                className="block text-sm font-medium text-gray-700"
+                htmlFor="email"
+                className="block text-sm font-medium"
               >
-                Username
+                Email
               </label>
               <input
-                {...register("username")}
-                id="username"
-                name="username"
+                {...register("email")}
+                id="email"
+                name="email"
                 type="text"
-                autoComplete="username"
+                autoComplete="email"
                 required
                 className="mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
               />
-              {errors.username && (
-                <p className="text-red-500">{errors.username.message}</p>
+              {errors.email && (
+                <p className="text-red-500">{errors.email.message}</p>
               )}
             </div>
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium"
               >
                 Password
               </label>
@@ -108,7 +108,7 @@ const Login: React.FC = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-purple-500"
+                className="mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-orange-500"
               />
               {errors.password && (
                 <p className="text-red-500">{errors.password.message}</p>
@@ -118,7 +118,7 @@ const Login: React.FC = () => {
               <button
                 disabled={isSubmitting}
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-700"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-700"
               >
                 Sign in
               </button>
@@ -130,7 +130,7 @@ const Login: React.FC = () => {
             )}
             <div className="text-center">
               Don't have an account?{" "}
-              <a className="text-blue-700 hover:text-blue-500" href="/register">
+              <a className="text-blue-400 hover:text-blue-500" href="/register">
                 Sign Up
               </a>
             </div>
@@ -142,4 +142,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-    

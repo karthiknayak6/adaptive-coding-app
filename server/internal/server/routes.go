@@ -9,6 +9,10 @@ import (
 
 func (s *Server) RegisterRoutes() http.Handler {
 	e := echo.New()
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:3000"},
+		AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
+	}))
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.GET("/health", s.healthHandler)

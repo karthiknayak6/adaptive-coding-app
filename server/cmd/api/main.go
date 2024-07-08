@@ -9,6 +9,7 @@ import (
 func main() {
 
 	server, err := server.NewServer()
+
 	if err != nil {
 		panic("Server creation failed!!")
 	}

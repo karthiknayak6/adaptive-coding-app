@@ -93,7 +93,7 @@ func (s *Server) LoginHandler(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Invalid credentials"})
 	}
 
-	// Check password
+	// Check password	
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginReq.Password))
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Invalid credentials"})

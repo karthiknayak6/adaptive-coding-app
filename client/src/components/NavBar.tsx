@@ -13,19 +13,19 @@ export default function Navbar() {
   };
 
   return (
-    <nav className=" bg-white shadow-md p-4  w-full">
+    <nav className=" bg-[#332f2f] shadow-md p-4  w-full">
       <div className=" container mx-auto">
         <div className="flex items-center justify-between">
           <div
             onClick={() => router.push("/")}
-            className=" text-2xl font-bold text-purple-800 cursor-pointer  "
+            className=" text-2xl font-bold text-orange-100 cursor-pointer  "
           >
-            SmarTrack
+            CodeMastery
           </div>
           <div className="flex space-x-4">
             {true && <a
               href="/login"
-              className=" hover:text-gray-400 font-medium text-gray-700 text-lg"
+              className=" hover:text-gray-400 font-medium text-orange-100 text-lg"
             >
               Login
             </a>}
