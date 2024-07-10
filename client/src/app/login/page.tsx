@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import * as z from 'zod';
+import * as z from "zod";
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { BallTriangle } from "react-loader-spinner";
@@ -33,7 +33,7 @@ const Login: React.FC = () => {
     setIsLoading(true);
     try {
       // Your login logic here
-      const response = await axios.post('http://localhost:8080/login', data);
+      const response = await axios.post("http://localhost:8080/login", data);
       if (response.status === 200) {
         setIsLoggedIn(true);
         reset();
@@ -68,17 +68,12 @@ const Login: React.FC = () => {
 
   return (
     <div>
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center container">
         <div className="max-w-md w-full p-8 space-y-8 bg-[#332f2f] text-orange-100 rounded-lg shadow-md">
-          <h2 className="text-3xl font-extrabold text-center">
-            Login
-          </h2>
+          <h2 className="text-3xl font-extrabold text-center">Login</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium"
-              >
+              <label htmlFor="email" className="block text-sm font-medium">
                 Email
               </label>
               <input
@@ -88,17 +83,14 @@ const Login: React.FC = () => {
                 type="text"
                 autoComplete="email"
                 required
-                className="mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
+                className="text-black mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
               />
               {errors.email && (
                 <p className="text-red-500">{errors.email.message}</p>
               )}
             </div>
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium"
-              >
+              <label htmlFor="password" className="block text-sm font-medium">
                 Password
               </label>
               <input
@@ -108,7 +100,7 @@ const Login: React.FC = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-orange-500"
+                className=" text-black mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-orange-500"
               />
               {errors.password && (
                 <p className="text-red-500">{errors.password.message}</p>

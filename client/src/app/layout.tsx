@@ -18,11 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en" className=" ">
       <body className="{inter.className} bg-[#212121]">
-      <nav><NavBar/></nav>
-        <div className="min-h-screen container mx-auto">
-          
-          {children}
-        </div>
+        <nav>
+          <NavBar />
+        </nav>
+        <div className="min-h-screen  mx-auto">{children}</div>
       </body>
     </html>
   );

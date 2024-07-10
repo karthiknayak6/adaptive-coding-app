@@ -19,6 +19,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	e.POST("/register", s.RegisterHandler)
 	e.POST("/login", s.LoginHandler)
 	e.GET("/update", s.updateProblems)
+	e.POST("/execute", s.ExecuteHandler)
 
 	return e
 }

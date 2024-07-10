@@ -37,7 +37,7 @@ const Register: React.FC = () => {
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
     try {
       // Replace with your registration logic, e.g., API call
-      await axios.post('http://localhost:8080/register', data);
+      await axios.post("http://localhost:8080/register", data);
       setIsRegistered(true);
       reset();
     } catch (error) {
@@ -48,17 +48,14 @@ const Register: React.FC = () => {
 
   return (
     <div>
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center container">
         <div className="max-w-md w-full p-8 space-y-8 bg-[#332f2f] rounded-lg shadow-md mt-8 mb-20 text-orange-100">
           <h2 className="text-3xl font-extrabold text-center text-orange-100">
             Register
           </h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
-              <label
-                htmlFor="first_name"
-                className="block text-sm font-medium"
-              >
+              <label htmlFor="first_name" className="block text-sm font-medium">
                 First name:
               </label>
               <input
@@ -68,17 +65,14 @@ const Register: React.FC = () => {
                 type="text"
                 autoComplete="first_name"
                 required
-                className="mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
+                className="text-black mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
               />
               {errors.first_name && (
                 <p className="text-red-500">{errors.first_name.message}</p>
               )}
             </div>
             <div>
-              <label
-                htmlFor="last_name"
-                className="block text-sm font-medium"
-              >
+              <label htmlFor="last_name" className="block text-sm font-medium">
                 Last name:
               </label>
               <input
@@ -88,17 +82,14 @@ const Register: React.FC = () => {
                 type="text"
                 autoComplete="last_name"
                 required
-                className="mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
+                className="text-black mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
               />
               {errors.last_name && (
                 <p className="text-red-500">{errors.last_name.message}</p>
               )}
             </div>
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium"
-              >
+              <label htmlFor="email" className="block text-sm font-medium">
                 Email:
               </label>
               <input
@@ -108,17 +99,14 @@ const Register: React.FC = () => {
                 type="text"
                 autoComplete="email"
                 required
-                className="mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
+                className="text-black mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
               />
               {errors.email && (
                 <p className="text-red-500">{errors.email.message}</p>
               )}
             </div>
             <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium"
-              >
+              <label htmlFor="username" className="block text-sm font-medium">
                 Username
               </label>
               <input
@@ -128,17 +116,14 @@ const Register: React.FC = () => {
                 type="text"
                 autoComplete="username"
                 required
-                className="mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
+                className="text-black mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
               />
               {errors.username && (
                 <p className="text-red-500">{errors.username.message}</p>
               )}
             </div>
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium"
-              >
+              <label htmlFor="password" className="block text-sm font-medium">
                 Password
               </label>
               <input
@@ -148,7 +133,7 @@ const Register: React.FC = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-orange-500"
+                className="text-black mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-orange-500"
               />
               {errors.password && (
                 <p className="text-red-500">{errors.password.message}</p>
@@ -167,7 +152,7 @@ const Register: React.FC = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-orange-500"
+                className="text-black mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-orange-500"
               />
               {errors.confirmPassword && (
                 <p className="text-red-500">{errors.confirmPassword.message}</p>

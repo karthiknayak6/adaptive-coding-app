@@ -1,10 +1,11 @@
 import React from "react";
 import Intro from "@/components/Intro";
 import Working from "@/components/Working";
+import ButtonOrange from "@/components/ButtonOrange";
 export default function Home() {
   return (
-    <>
-      <div className="bg-[#332f2f] shadow-lg rounded-3xl py-8 mt-10 flex flex-col justify-center text-orange-100">
+    <div className="container">
+      <div className="bg-[#332f2f] shadow-lg rounded-3xl py-8 mt-10 flex flex-col justify-center text-orange-100 ">
         <div className="flex mt-6 justify-center items-center mx-10">
           <div className=" text-lg ml-10">
             <h2 className="text-5xl font-bold mb-4">Welcome, Karthik!</h2>
@@ -40,9 +41,7 @@ export default function Home() {
                 to solve complex problems efficiently. Choose this path to
                 master essential skills and advance your career in tech!
               </p>
-              <button className="mt-8 px-6 py-3 w-40 bg-orange-600 text-white text-lg font-medium rounded-full shadow-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-75 transition ease-in-out duration-300">
-                Start
-              </button>
+              <ButtonOrange>Start</ButtonOrange>
             </div>
           </div>
         </div>
@@ -50,7 +49,13 @@ export default function Home() {
       <div className="bg-[#332f2f] shadow-lg rounded-3xl py-8 mt-10 flex flex-col justify-center text-orange-100">
         <div className="flex justify-center items-center mx-10">
           <div className=" text-orange-100  flex">
-            <img alt="ds" src="/alg0.png" width={250} height={100} />
+            <img
+              className=""
+              alt="ds"
+              src="/alg0.png"
+              width={250}
+              height={100}
+            />
             <div className="px-10">
               <div className="text-4xl">
                 Data Structures and Algorithms (Intermediate)
@@ -72,6 +77,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
