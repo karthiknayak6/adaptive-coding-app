@@ -1,0 +1,70 @@
+{
+  "problems": [
+    {
+      "id": 1,
+      "title": "Two Sum",
+      "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef twoSum(nums, target):\n    # Write your code here\n\n# Dont Touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nparser.add_argument('arg2', help='The second argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = twoSum(list_from_string, int(args.arg2))\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "nums": [2, 7, 11, 15],
+            "target": 9
+          },
+          "output": [0, 1]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "nums": [3, 2, 4],
+            "target": 6
+          },
+          "output": [1, 2]
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "nums": [8, 2, 5, 4],
+            "target": 6
+          },
+          "output": [1, 3]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Add Two Numbers",
+      "description": "Given two integers a and b, return their sum.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef addTwoNumbers(a, b):\n    # Write your code here\n    \n# Dont Touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nparser.add_argument('arg2', help='The second argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = addTwoNumbers(list_from_string, int(args.arg2))\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "a": 2,
+            "b": 3
+          },
+          "output": 5
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "a": -1,
+            "b": 1
+          },
+          "output": 0
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "a": 100,
+            "b": 200
+          },
+          "output": 300
+        }
+      ]
+    }
+  ]
+}

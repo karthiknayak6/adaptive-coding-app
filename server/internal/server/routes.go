@@ -10,7 +10,7 @@ import (
 func (s *Server) RegisterRoutes() http.Handler {
 	e := echo.New()
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:3000"},
+		AllowOrigins: []string{"http://localhost:3000", "http://127.0.0.1:8000/"},
 		AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
 	}))
 	e.Use(middleware.Logger())
@@ -20,6 +20,8 @@ func (s *Server) RegisterRoutes() http.Handler {
 	e.POST("/login", s.LoginHandler)
 	e.GET("/update", s.updateProblems)
 	e.POST("/execute", s.ExecuteHandler)
+	e.GET("/suggest/:problemId", s.SuggestProblem)
+	e.POST("/submission", s.ValidateSubmission)
 
 	return e
 }
