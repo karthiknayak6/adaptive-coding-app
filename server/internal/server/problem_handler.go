@@ -172,9 +172,9 @@ type KeyValue struct {
 
 // TestCase represents a test case for a problem
 type TestCase struct {
-	TestCaseID int         `bson:"testcaseid"`
-	Input      map[string]interface{} `bson:"input"`
-	Output     interface{} `bson:"output"`
+	TestCaseID int         				`bson:"testcaseid"`
+	Input      map[string]interface{} 	`bson:"input"`
+	Output     interface{} 				`bson:"output"`
 }
 
 // Problem represents a problem document in MongoDB
@@ -192,16 +192,29 @@ type SubmissionRequest struct {
 	Submission string `json:"submission"`
 }
 
+type TestCaseResponse struct {
+	TestCaseID 		int    `json:"testcaseid"`
+	Passed     		bool   `json:"passed"`
+	ActualOutput 	string `json:"actualOutput"`
+	ExpectedOutput 	string `json:"expectedOutput"`
+	Error           string `json:"error,omitempty"`
+}
+
 // SubmissionResponse represents the response payload for a submission
 type SubmissionResponse struct {
-	Passed bool   `json:"passed"`
-	Error  string `json:"error,omitempty"`
+	ProblemID      		string              `json:"problemId"`
+	Passed         		bool                `json:"passed"`
+	Tests          		[]TestCaseResponse  `json:"tests"`
+	TotalTimeTaken  	time.Duration       `json:"totalTimeTaken"`
+	TotalMemoryUsed 	int64             `json:"totalMemoryUsed"`
 }
 // Server represents the server structure
 
 
 func (s *Server) ValidateSubmission(c echo.Context) error {
 	var req SubmissionRequest
+	var res SubmissionResponse
+
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request payload"})
 	}
@@ -236,6 +249,15 @@ func (s *Server) ValidateSubmission(c echo.Context) error {
 	}
 	fmt.Println("Testcases", problem.TestCases)
 
+	// Start measuring time and memory
+	startTime := time.Now()
+	var memStart, memEnd syscall.Rusage
+
+	if err := syscall.Getrusage(syscall.RUSAGE_SELF, &memStart); err != nil {
+		log.Println("Failed to get initial memory usage:", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to get initial memory usage"})
+	}
+
 	for _, testCase := range problem.TestCases {
 		fmt.Println("\n\nTestCase Input:", testCase.Input)
 		for key, value := range testCase.Input {
@@ -262,13 +284,21 @@ func (s *Server) ValidateSubmission(c echo.Context) error {
 		fmt.Println("\n\ninputValues:", append([]string{pythonCodeFile}, inputValues...))
 		cmd := exec.Command("python3", append([]string{pythonCodeFile}, inputValues...)...)
 		output, err := cmd.CombinedOutput() // Use CombinedOutput to capture stdout and stderr
+
+		outputStr := strings.TrimSpace(string(output))
 		if err != nil {
 			log.Printf("Error executing command: %s, Output: %s", err, output)
-			continue // Skip this test case
+			res.Tests = append(res.Tests, TestCaseResponse{
+				TestCaseID:      testCase.TestCaseID,
+				Passed:          false,
+				ActualOutput:    outputStr,
+				ExpectedOutput:  fmt.Sprint(testCase.Output),
+				Error:           err.Error(),
+			})
+			continue
 		}
 
 		// Print the output
-		outputStr := strings.TrimSpace(string(output))
 		fmt.Printf("Output: %s\n", outputStr)
 
 		// Convert expected output to string for comparison
@@ -280,13 +310,44 @@ func (s *Server) ValidateSubmission(c echo.Context) error {
 		actualOutput := strings.Trim(outputStr, "[]") // Remove square brackets
 		actualOutput = strings.ReplaceAll(actualOutput, ",", "") // Remove commas
 
+		res.Tests = append(res.Tests, TestCaseResponse{
+			TestCaseID:      testCase.TestCaseID,
+			Passed:          actualOutput == expectedOutput,
+			ActualOutput:    actualOutput,
+			ExpectedOutput:  expectedOutput,
+		})
+
 		if actualOutput == expectedOutput {
 			fmt.Println("Test case passed")
+			fmt.Printf("Expected Output: [%s], Actual Output: [%s]\n", expectedOutput, actualOutput)
 		} else {
 			fmt.Println("Test case failed")
 			fmt.Printf("Expected Output: [%s], Actual Output: [%s]\n", expectedOutput, actualOutput)
 		}
 	}
 
-	return c.JSON(http.StatusOK, map[string]string{"message": "Validation successful"})
+	// End measuring time and memory
+	totalTimeTaken := time.Since(startTime)
+	if err := syscall.Getrusage(syscall.RUSAGE_SELF, &memEnd); err != nil {
+		log.Println("Failed to get final memory usage:", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to get final memory usage"})
+	}
+
+	totalMemoryUsed := memEnd.Maxrss - memStart.Maxrss
+
+	res.ProblemID = req.ProblemID
+	res.TotalTimeTaken = totalTimeTaken
+	res.TotalMemoryUsed = totalMemoryUsed
+
+	totalPassedCases := 0
+	for _, testCase := range res.Tests {
+		if testCase.Passed {
+			totalPassedCases++
+		}
+	}
+	if totalPassedCases == len(res.Tests) {
+		res.Passed = true
+	}
+
+	return c.JSON(http.StatusOK, res)
 }

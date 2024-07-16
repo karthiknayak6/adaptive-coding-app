@@ -104,7 +104,7 @@ args = parser.parse_args()
 list_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))
 result = twoSum(list_from_string, int(args.arg2))
 print(result)
-
+    
 
 
 

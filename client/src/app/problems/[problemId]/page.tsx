@@ -1,7 +1,6 @@
-// Page.tsx
 "use client";
 import React, { useEffect, useState, KeyboardEvent } from "react";
-import { useParams } from "react-router-dom";
+import { useRouter, useParams } from "next/navigation"; // Only import this
 import Editor from "@monaco-editor/react";
 import ButtonOrange from "@/components/ButtonOrange";
 import TestCase from "@/components/TestCase";
@@ -24,13 +23,16 @@ interface Problem {
   id: number;
   title: string;
   description: string;
+  boilerplate: string;
   difficulty: string;
   test_cases: TestCase[];
 }
 
 const Page: React.FC = () => {
-  const { pid } = useParams<{ pid: string }>();
-  const cleanId: string = pid ? pid.substring(1) : "1";
+  const params = useParams();
+  const problemId = params.problemId;
+
+  console.log("ProblemId: ", problemId);
   const [CodeSeg, setCodeSeg] = useState<string>("");
   const [testCase, setTestCase] = useState<TestCase | null>(null);
   const [selectedTestCase, setSelectedTestCase] = useState<number>(0);
@@ -40,11 +42,10 @@ const Page: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const init = async () => {
+    if (!problemId) return; // Ensure problemId is available
     setLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:8080/suggest/${cleanId}`
-      );
+      const response = await axios.get(`${backendUrl}/suggest/${problemId}`);
       setProblem(response.data);
       if (response.data.test_cases.length > 0) {
         setTestCase(response.data.test_cases[0]);
@@ -58,7 +59,7 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     init();
-  }, []);
+  }, [problemId]); // Re-run init when problemId changes
 
   useEffect(() => {
     if (problem && problem.test_cases.length > 0) {
@@ -85,10 +86,11 @@ const Page: React.FC = () => {
     setSubmission(value || "");
     console.log("my sub", submission);
   };
+
   const handleSubmit = async () => {
     try {
       const response = await axios.post(`${backendUrl}/submission`, {
-        problemId: cleanId,
+        problemId: problemId,
         submission: submission,
       });
       console.log(response.data);
@@ -106,15 +108,17 @@ const Page: React.FC = () => {
       ) : problem ? (
         <div
           id="problempage"
-          className="flex justify-center px-1 space-x-8 text-white mt-10 mx-6"
+          className="flex justify-center px-1 space-x-8 text-white mt-7 mx-6"
         >
           <div className="w-1/2">
             <h1 className="text-4xl font-bold mb-5 text-orange-100">
               {problem.title}
             </h1>
             <h5 className="text-xl font-bold">Description:</h5>
-            <p className="text-lg">{problem.description}</p>
-            {problem.test_cases && problem.test_cases.length > 0 && (
+            <div className="description-scrollable">
+              <p className="text-lg">{problem.description}</p>
+            </div>
+            {problem.test_cases.length > 0 && (
               <div className="flex flex-col mt-5">
                 <code className="text-lg">
                   Input:
@@ -133,30 +137,39 @@ const Page: React.FC = () => {
               </div>
             )}
           </div>
-          <div className="code w-1/2">
+          <div className="code w-2/3">
             <div className="code-form flex flex-col">
+              <div>
+                <select
+                  title="language"
+                  name="language"
+                  className="w-24 h-8 text-sm bg-[#3c3939] rounded-full  py-1 pl-4 mb-2"
+                >
+                  <option value={"python3"}>Python3</option>
+                </select>
+              </div>
               <Editor
-                height="40vh"
+                height="50vh"
                 width={"100%"}
+                options={{
+                  scrollBeyondLastLine: false,
+                  fontSize: 16,
+                }}
                 theme="vs-dark"
-                defaultLanguage="c"
-                defaultValue={`#include <stdio.h>
-int main() {
-    printf("Hello World!");
-    return 0;
-}`}
+                defaultLanguage="python"
+                defaultValue={problem.boilerplate}
                 onChange={handleEditorChange}
               />
 
-              <div className="flex space-x-4 items-center justify-evenly mt-3 rounded-full py-4 bg-[#332f2f]">
-                <ButtonOrange className="w-30 py-2 px-8 h-15 text-sm">
+              <div className="flex space-x-4  mt-3 rounded-full py-2 bg-[#332f2f]">
+                <ButtonOrange className="w-20 py-0  h-7 text-sm ml-3">
                   Run
                 </ButtonOrange>
-                <ButtonOrange className="w-30 py-2 px-8 h-15 text-sm">
+                <ButtonOrange className="w-20 py-0  h-7 text-sm">
                   Reset
                 </ButtonOrange>
                 <ButtonOrange
-                  className="w-30 py-2 px-8 h-15 text-sm"
+                  className="w-20 py-0  h-7 text-sm"
                   type="submit"
                   id="submit"
                   onClick={handleSubmit}
@@ -166,8 +179,8 @@ int main() {
               </div>
 
               {testCase && (
-                <div className="bg-[#332f2f] shadow-lg rounded-3xl py-0 mt-3 justify-center text-orange-100 h-80">
-                  <div className="bg-[#544f4f] rounded-t-3xl pt-3 pl-8 pb-3">
+                <div className="bg-[#332f2f] shadow-lg rounded-3xl py-0 mt-3 justify-center text-orange-100 ">
+                  <div className="bg-[#544f4f] rounded-t-3xl pt-2 pl-8 pb-2">
                     Test cases
                   </div>
                   <div>
@@ -179,7 +192,7 @@ int main() {
                             setTestCase(tc);
                             setSelectedTestCase(index);
                           }}
-                          className={`p-2 rounded-full px-4 cursor-pointer hover:bg-orange-400 ${
+                          className={`py-[6px] text-sm rounded-full px-3 cursor-pointer hover:bg-orange-400 ${
                             selectedTestCase === index
                               ? "bg-orange-500 text-white"
                               : "bg-orange-300 text-black"

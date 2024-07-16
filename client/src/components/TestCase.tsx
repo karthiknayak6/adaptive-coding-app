@@ -14,9 +14,9 @@ interface TestCaseProps {
 
 export default function TestCase({ testCase }: TestCaseProps) {
   return (
-    <div className="">
-      <div className="bg-[#433e3e] mt-5 h-16 pt-3 pl-8 pb-2">
-        <span>Input: </span>
+    <div className="mb-6">
+      <div className="bg-[#433e3e] mt-3 py-3 pl-8 ">
+        <span className="font-bold mr-2">Input: </span>
         <span>
           {testCase.input.map((item, index) => (
             <span key={index}>
@@ -29,8 +29,8 @@ export default function TestCase({ testCase }: TestCaseProps) {
           ))}
         </span>
       </div>
-      <div className="bg-[#433e3e] mt-5 h-16 pt-3 pl-8 pb-2">
-        <span>Target: </span>
+      <div className="bg-[#433e3e] mt-3 pl-8 py-3">
+        <span className="font-bold mr-2">Target: </span>
         <span>{JSON.stringify(testCase.output)}</span>
       </div>
     </div>
