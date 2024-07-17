@@ -19,11 +19,11 @@ func (s *Server) RegisterRoutes() http.Handler {
 	e.GET("/health", s.healthHandler)
 	e.POST("/register", s.RegisterHandler)
 	e.POST("/login", s.LoginHandler)
-
+	e.GET("/update", s.updateProblems)
 	
 	r := e.Group("/api")
 	r.Use(middlewares.AuthMiddleware) 
-	r.GET("/update", s.updateProblems)
+	
 	r.GET("/suggest/:problemId", s.SuggestProblem)
 	r.POST("/submission", s.ValidateSubmission)
 

@@ -125,6 +125,7 @@ type Problem struct {
 type SubmissionRequest struct {
 	ProblemID  string `json:"problemId"`
 	Submission string `json:"submission"`
+	UserTime   float64 `json:"userTime"`
 }
 
 type TestCaseResponse struct {
@@ -284,43 +285,139 @@ func (s *Server) ValidateSubmission(c echo.Context) error {
 	if totalPassedCases == len(res.Tests) {
 		res.Passed = true
 	}
+	var user models.User
+	err = collection.FindOne(context.Background(), bson.M{"username": c.Get("username")}).Decode(&user)
+	if err != nil {
+		log.Println("Failed to find user:", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to find user"})
+	}
+	var problemDetails models.ProblemDetails
+
+	problemDetails.ProblemID = problem.ID
+	problemDetails.UserID = user.ID
+	problemDetails.SolvedAt = time.Now()
+	problemDetails.TimeTaken = req.UserTime
+	problemDetails.Runtime = float64(totalTimeTaken)
+	problemDetails.DifficultyLevel = problem.Difficulty
+
+
+	collection = s.db.GetCollection("problem_details")
+	_, err = collection.InsertOne(context.Background(), problemDetails)
+	if err != nil {
+		log.Println("Failed to insert problem details:", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to insert problem details"})
+	}
+
+	level, err := predictUserLevel(problem.Difficulty, req.UserTime, float64(totalTimeTaken))
+	lvmap := map[string]string{"Beginner": "Easy", "Intermediate": "Medium", "Expert": "Hard"}
+
+	fmt.Println("Predicted Level: ", level)
+
+	fmt.Println("Predicted Level: ", lvmap[level])
+	if err != nil {
+		log.Println("Failed to predict user level:", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to predict user level"})
+	}
+
+
 
 	return c.JSON(http.StatusOK, res)
 }
 
 
-func (s *Server) AcceptUserSubmission(c echo.Context) error {
-	panic("implement me")
+type AcceptUserSubmissionRequest struct {
+	ProblemID string `json:"problemId"`
+	Submission string `json:"submission"`
+	TimeTaken float64 `json:"timeTaken"`
+	RunTime   float64 `json:"runTime"`
 }
 
-func predictUserLevel(w http.ResponseWriter, r *http.Request) {
-    if r.Method == http.MethodPost {
-        time := r.FormValue("time")
-        runtime := r.FormValue("runtime")
+// func (s *Server) AcceptUserSubmission(c echo.Context) error {
 
-        // Convert the form values to float
-        timeVal, err := strconv.ParseFloat(time, 64)
-        if err != nil {
-            http.Error(w, "Invalid time value", http.StatusBadRequest)
-            return
-        }
+// 	var req AcceptUserSubmissionRequest
+// 	if err := c.Bind(&req); err != nil {
+// 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request payload"})
+// 	}
 
-        runtimeVal, err := strconv.ParseFloat(runtime, 64)
-        if err != nil {
-            http.Error(w, "Invalid runtime value", http.StatusBadRequest)
-            return
-        }
+// 	collection := s.db.GetCollection("users")
+// 	var user models.User
+// 	err := collection.FindOne(context.Background(), bson.M{"username": c.Get("username")}).Decode(&user)
+// 	if err != nil {
+// 		log.Println("Failed to find user:", err)
+// 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to find user"})
+// 	}
 
-        // Call the Python script with time and runtime as arguments
-        cmd := exec.Command("python3", "predict_level.py", fmt.Sprintf("%f", timeVal), fmt.Sprintf("%f", runtimeVal))
-        output, err := cmd.Output()
-        if err != nil {
-            log.Fatal(err)
-        }
+// 	collection = s.db.GetCollection("problems")
+// 	var problem models.Problem
+// 	err = collection.FindOne(context.Background(), bson.M{"id": req.ProblemID}).Decode(&problem)
+// 	if err != nil {
+// 		log.Println("Failed to find problem:", err)
+// 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to find problem"})
+// 	}
+// 	var problemDetails models.ProblemDetails
 
-        // Return the predicted level as response
-        fmt.Fprintf(w, "Predicted Level: %s", string(output))
-    } else {
-        http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-    }
+// 	problemDetails.ProblemID = problem.ID
+// 	problemDetails.UserID = user.ID
+// 	problemDetails.SolvedAt = time.Now()
+// 	problemDetails.TimeTaken = req.TimeTaken
+// 	problemDetails.Runtime = req.RunTime
+// 	problemDetails.DifficultyLevel = problem.Difficulty
+
+
+// 	collection = s.db.GetCollection("problem_details")
+// 	_, err = collection.InsertOne(context.Background(), problemDetails)
+// 	if err != nil {
+// 		log.Println("Failed to insert problem details:", err)
+// 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to insert problem details"})
+// 	}
+
+	
+
+
+// 	return c.JSON(http.StatusOK, user)
+	
+// }
+
+func predictUserLevel(difficulty string, timeTaken float64, runtime float64) (string,error) {
+	fmt.Println("Function call")
+
+	// Prepare the command
+	cmd := exec.Command("python3", "/home/karthik/adaptive-coding-app/server/internal/scripts/predict_level.py", fmt.Sprintf("%f", timeTaken), fmt.Sprintf("%f", runtime))
+
+	// Run the command and capture the output
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Printf("Failed to execute command: %s\nError: %v\nOutput: %s", cmd.String(), err, string(output))
+		return "", err
+	}
+
+	// Print the predicted level and difficulty
+	fmt.Printf("Predicted Level: %s", string(output))
+	fmt.Println("difficulty: ", difficulty)
+
+	return string(output), nil
 }
+
+
+// package models
+
+// import "go.mongodb.org/mongo-driver/bson/primitive"
+
+// type TestCase struct {
+// 	TestCaseID int         `json:"test_case_id" bson:"test_case_id"`
+// 	Input      interface{} `json:"input" bson:"input"`
+// 	Output     interface{} `json:"output" bson:"output"`
+// }
+
+// type Problem struct {
+// 	ID          primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+// 	Title       string             `json:"title" bson:"title"`
+// 	Description string             `json:"description" bson:"description"`
+// 	Boilerplate string             `json:"boilerplate" bson:"boilerplate"`
+// 	Difficulty  string             `json:"difficulty" bson:"difficulty"`
+// 	TestCases   []TestCase         `json:"test_cases" bson:"test_cases"`
+// }
+
+// type ProblemsFile struct {
+// 	Problems []Problem `json:"problems" bson:"problems"`
+// }

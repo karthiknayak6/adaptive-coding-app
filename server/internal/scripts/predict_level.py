@@ -3,7 +3,8 @@ import numpy as np
 import sys
 
 def predict_level(time, runtime):
-    with open('clustering_model.pkl', 'rb') as f:
+    print("Workingggg")
+    with open('/home/karthik/adaptive-coding-app/server/internal/scripts/clustering_model.pkl', 'rb') as f:
         data = pickle.load(f)
 
     scaler = data['scaler']

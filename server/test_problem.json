@@ -1,0 +1,163 @@
+{
+  "problems": [
+    {
+      "id": 1,
+      "title": "Add Two Numbers",
+      "description": "Given two integers a and b, return their sum.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef addTwoNumbers(a, b):\n    # Write your code here\n    \n# Dont Touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nparser.add_argument('arg2', help='The second argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = addTwoNumbers(list_from_string, int(args.arg2))\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "a": 2,
+            "b": 3
+          },
+          "output": 5
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "a": -1,
+            "b": 1
+          },
+          "output": 0
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "a": 100,
+            "b": 200
+          },
+          "output": 300
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Two Sum",
+      "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef twoSum(nums, target):\n    # Write your code here\n\n# Dont Touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nparser.add_argument('arg2', help='The second argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = twoSum(list_from_string, int(args.arg2))\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "nums": [2, 7, 11, 15],
+            "target": 9
+          },
+          "output": [0, 1]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "nums": [3, 2, 4],
+            "target": 6
+          },
+          "output": [1, 2]
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "nums": [8, 2, 5, 4],
+            "target": 6
+          },
+          "output": [1, 3]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Find the Maximum Subarray Sum",
+      "description": "Given an array of integers, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum. This problem can be solved using Kadane's algorithm, which runs in linear time.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef maxSubArray(nums):\n    # Write your code here\n\n# Dont Touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = maxSubArray(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "nums": [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+          },
+          "output": 6
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "nums": [1]
+          },
+          "output": 1
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "nums": [5, 4, -1, 7, 8]
+          },
+          "output": 23
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Rotate Array",
+      "description": "Given an array, rotate the array to the right by k steps, where k is non-negative. This means that elements will be shifted and the overflow will wrap around to the beginning of the array. For example, if the array is [1, 2, 3, 4, 5] and k is 2, the result should be [4, 5, 1, 2, 3].",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef rotateArray(nums, k):\n    # Write your code here\n\n# Dont Touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nparser.add_argument('arg2', help='The second argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = rotateArray(list_from_string, int(args.arg2))\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "nums": [1, 2, 3, 4, 5],
+            "k": 2
+          },
+          "output": [4, 5, 1, 2, 3]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "nums": [-1, -100, 3, 99],
+            "k": 2
+          },
+          "output": [3, 99, -1, -100]
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "nums": [1, 2],
+            "k": 3
+          },
+          "output": [2, 1]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Count Primes",
+      "description": "Given an integer n, return the number of prime numbers that are strictly less than n. A prime number is a natural number greater than 1 that cannot be formed by multiplying two smaller natural numbers.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef countPrimes(n):\n    # Write your code here\n\n# Dont Touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', help='The first argument (can be any type)')\nargs = parser.parse_args()\nresult = countPrimes(int(args.arg1))\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "n": 10
+          },
+          "output": 4
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "n": 0
+          },
+          "output": 0
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "n": 1
+          },
+          "output": 0
+        }
+      ]
+    }
+  ]
+}

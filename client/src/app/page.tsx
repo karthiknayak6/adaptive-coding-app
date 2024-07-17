@@ -4,8 +4,19 @@ import Intro from "@/components/Intro";
 import Working from "@/components/Working";
 import ButtonOrange from "@/components/ButtonOrange";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 export default function Home() {
   const router = useRouter();
+
+  let user = localStorage.getItem("user");
+
+  if (user) {
+    user = JSON.parse(user);
+  }
+
+  if (!user) {
+    router.push("/welcome");
+  }
   return (
     <div className="container">
       <div className="bg-[#332f2f] shadow-lg rounded-3xl py-8 mt-7 flex flex-col justify-center text-orange-100 ">

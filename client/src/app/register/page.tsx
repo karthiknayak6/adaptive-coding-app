@@ -65,7 +65,7 @@ const Register: React.FC = () => {
                 type="text"
                 autoComplete="first_name"
                 required
-                className="text-black mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
+                className="text-black mt-1 p-2 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
               />
               {errors.first_name && (
                 <p className="text-red-500">{errors.first_name.message}</p>
@@ -82,7 +82,7 @@ const Register: React.FC = () => {
                 type="text"
                 autoComplete="last_name"
                 required
-                className="text-black mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
+                className="text-black mt-1 p-2 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
               />
               {errors.last_name && (
                 <p className="text-red-500">{errors.last_name.message}</p>
@@ -99,7 +99,7 @@ const Register: React.FC = () => {
                 type="text"
                 autoComplete="email"
                 required
-                className="text-black mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
+                className="text-black mt-1 p-2 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
               />
               {errors.email && (
                 <p className="text-red-500">{errors.email.message}</p>
@@ -116,7 +116,7 @@ const Register: React.FC = () => {
                 type="text"
                 autoComplete="username"
                 required
-                className="text-black mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
+                className="text-black mt-1 p-2 block w-full border rounded-md focus:outline-none focus:border-indigo-500"
               />
               {errors.username && (
                 <p className="text-red-500">{errors.username.message}</p>
@@ -133,7 +133,7 @@ const Register: React.FC = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="text-black mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-orange-500"
+                className="text-black mt-1 p-2 block w-full border rounded-md focus:outline-none focus:border-orange-500"
               />
               {errors.password && (
                 <p className="text-red-500">{errors.password.message}</p>
@@ -152,7 +152,7 @@ const Register: React.FC = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="text-black mt-1 p-3 block w-full border rounded-md focus:outline-none focus:border-orange-500"
+                className="text-black mt-1 p-2 block w-full border rounded-md focus:outline-none focus:border-orange-500"
               />
               {errors.confirmPassword && (
                 <p className="text-red-500">{errors.confirmPassword.message}</p>

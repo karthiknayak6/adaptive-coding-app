@@ -49,7 +49,6 @@ export interface ProblemResponse {
 const Page: React.FC = () => {
   const params = useParams();
   const problemId = params.problemId;
-  const { user, dispatch } = useAuth();
 
   console.log("ProblemId: ", problemId);
   const [CodeSeg, setCodeSeg] = useState<string>("");
@@ -63,11 +62,16 @@ const Page: React.FC = () => {
   const [showPassed, setShowPassed] = useState<boolean>(false);
   const [elapsedTime, setElapsedTime] = useState<number>(0);
   const [finalTime, setFinalTime] = useState<number>(0);
+  let user = localStorage.getItem("user");
+  if (user) {
+    user = JSON.parse(user);
+  }
 
   const init = async () => {
-    if (!problemId) return; // Ensure problemId is available
+    if (!problemId) return;
     setLoading(true);
     try {
+      console.log("tears", user);
       const response = await axios.get(
         `${backendUrl}/api/suggest/${problemId}`,
         {
@@ -82,6 +86,7 @@ const Page: React.FC = () => {
       }
     } catch (err) {
       setError("Failed to fetch problem");
+      console.log("Error: ", err);
     } finally {
       setLoading(false);
     }
@@ -89,7 +94,7 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     init();
-  }, [problemId]); // Re-run init when problemId changes
+  }, [problemId]);
 
   useEffect(() => {
     if (problem && problem.test_cases.length > 0) {
@@ -145,6 +150,7 @@ const Page: React.FC = () => {
         {
           problemId: problemId,
           submission: submission,
+          userTime: elapsedTime,
         },
         {
           headers: {
@@ -235,14 +241,14 @@ const Page: React.FC = () => {
               />
 
               <div className="flex space-x-4  mt-3 rounded-full py-2 bg-[#332f2f]">
-                <ButtonOrange className="w-20 py-0  h-7 text-sm ml-3">
+                {/* <ButtonOrange className="w-20 py-0  h-7 text-sm ml-3">
                   Run
-                </ButtonOrange>
+                </ButtonOrange> */}
                 <ButtonOrange
                   onClick={() => {
                     setSubmission(problem.boilerplate);
                   }}
-                  className="w-20 py-0  h-7 text-sm"
+                  className="w-20 py-0 ml-3 h-7 text-sm"
                 >
                   Reset
                 </ButtonOrange>
