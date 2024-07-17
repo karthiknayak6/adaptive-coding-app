@@ -1,10 +1,12 @@
 "use client";
 import React, { useEffect, useState, KeyboardEvent } from "react";
-import { useRouter, useParams } from "next/navigation"; // Only import this
+import { useRouter, useParams } from "next/navigation";
 import Editor from "@monaco-editor/react";
 import ButtonOrange from "@/components/ButtonOrange";
 import TestCase from "@/components/TestCase";
 import axios from "axios";
+import Congratulations from "@/components/Congratulations";
+import Loading from "@/components/Loading";
 
 let backendUrl = "http://localhost:8080";
 
@@ -56,6 +58,9 @@ const Page: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [res, setRes] = useState<ProblemResponse>();
+  const [showPassed, setShowPassed] = useState<boolean>(false);
+  const [elapsedTime, setElapsedTime] = useState<number>(0);
+  const [finalTime, setFinalTime] = useState<number>(0);
 
   const init = async () => {
     if (!problemId) return; // Ensure problemId is available
@@ -82,6 +87,25 @@ const Page: React.FC = () => {
       setTestCase(problem.test_cases[0]);
     }
   }, [problem]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+    if (!showPassed) {
+      timer = setInterval(() => {
+        setElapsedTime((prevTime) => prevTime + 1000);
+      }, 1000);
+    } else if (showPassed && timer) {
+      clearInterval(timer);
+    }
+    return () => clearInterval(timer!);
+  }, [showPassed]);
+
+  const formatTime = (time: number) => {
+    const getSeconds = `0${Math.floor((time / 1000) % 60)}`.slice(-2);
+    const getMinutes = `0${Math.floor((time / 60000) % 60)}`.slice(-2);
+    const getHours = `0${Math.floor((time / 3600000) % 24)}`.slice(-2);
+    return `${getHours} : ${getMinutes} : ${getSeconds}`;
+  };
 
   const handleKey = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Tab") {
@@ -115,6 +139,12 @@ const Page: React.FC = () => {
 
       setRes(response.data);
 
+      if (response.data.passed) {
+        setShowPassed(true);
+        setFinalTime(elapsedTime);
+        setElapsedTime(0);
+      }
+
       console.log(response.data);
     } catch (error) {
       console.error("Failed to submit:", error);
@@ -122,15 +152,17 @@ const Page: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="relative">
       {loading ? (
-        <div>Loading...</div>
+        <Loading />
       ) : error ? (
         <div>{error}</div>
       ) : problem ? (
         <div
           id="problempage"
-          className="flex justify-center px-1 space-x-8 text-white mt-7 mx-6"
+          className={`flex justify-center px-1 space-x-8 text-white mt-7 mx-6 ${
+            showPassed ? "blur-sm pointer-events-none" : ""
+          }`}
         >
           <div className="w-1/2">
             <h1 className="text-4xl font-bold mb-5 text-orange-100">
@@ -161,7 +193,7 @@ const Page: React.FC = () => {
           </div>
           <div className="code w-2/3">
             <div className="code-form flex flex-col">
-              <div>
+              <div className="flex justify-between">
                 <select
                   title="language"
                   name="language"
@@ -169,6 +201,7 @@ const Page: React.FC = () => {
                 >
                   <option value={"python3"}>Python3</option>
                 </select>
+                <div>Timer: {formatTime(elapsedTime)}</div>
               </div>
               <Editor
                 height="50vh"
@@ -259,6 +292,13 @@ const Page: React.FC = () => {
         </div>
       ) : (
         <div>The searched Question Doesn't exist</div>
+      )}
+      {showPassed && (
+        <Congratulations
+          setShowPassed={setShowPassed}
+          finalTime={formatTime(finalTime)}
+          res={res}
+        />
       )}
     </div>
   );

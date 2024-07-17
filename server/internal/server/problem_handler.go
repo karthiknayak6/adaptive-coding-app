@@ -1,7 +1,6 @@
 package server
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -70,71 +69,7 @@ type CodeRequest struct {
 	Code string `json:"code"`
 }
 
-func setResourceLimits() error {
-	// Limit CPU time to 1 second
-	if err := syscall.Setrlimit(syscall.RLIMIT_CPU, &syscall.Rlimit{Cur: 1, Max: 1}); err != nil {
-		return fmt.Errorf("failed to set CPU limit: %v", err)
-	}
-	// Limit memory usage to 100 MB (or a higher value if necessary)
-	if err := syscall.Setrlimit(syscall.RLIMIT_AS, &syscall.Rlimit{Cur: 100 * 1024 * 1024, Max: 100 * 1024 * 1024}); err != nil {
-		return fmt.Errorf("failed to set memory limit: %v", err)
-	}
-	return nil
-}
 
-func (s *Server) ExecuteHandler(c echo.Context) error {
-	// Parse the JSON request body
-	var req CodeRequest
-	if err := c.Bind(&req); err != nil {
-		return c.String(400, "Invalid request")
-	}
-
-	// Save the C code to a temporary file
-	tmpDir := os.TempDir()
-	sourceFile := filepath.Join(tmpDir, "user_code.c")
-	executable := filepath.Join(tmpDir, "user_code.out")
-	err := os.WriteFile(sourceFile, []byte(req.Code), 0644)
-	if err != nil {
-		return c.String(500, fmt.Sprintf("Failed to write code to file: %v", err))
-	}
-
-	// Compile the C code using gcc
-	cmd := exec.Command("gcc", sourceFile, "-o", executable)
-	var stderr bytes.Buffer
-	cmd.Stderr = &stderr
-	err = cmd.Run()
-	if err != nil {
-		return c.String(500, fmt.Sprintf("Compilation error: %s", stderr.String()))
-	}
-
-	// Set resource limits
-	if err := setResourceLimits(); err != nil {
-		return c.String(500, fmt.Sprintf("Failed to set resource limits: %v", err))
-	}
-
-	// Run the executable with a timeout
-	cmd = exec.Command(executable)
-	var stdout bytes.Buffer
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-	done := make(chan error)
-	go func() {
-		done <- cmd.Run()
-	}()
-
-	select {	
-	case <-time.After(1 * time.Second):
-		if err := cmd.Process.Kill(); err != nil {
-			fmt.Printf("failed to kill: %v\n", err)
-		}
-		return c.String(500, "Execution timed out")
-	case err := <-done:
-		if err != nil {
-			return c.String(500, fmt.Sprintf("Runtime error: %s", stderr.String()))
-		}
-		return c.String(200, stdout.String())
-	}
-}
 
 
 func (s *Server) SuggestProblem(c echo.Context) error {
@@ -206,7 +141,7 @@ type SubmissionResponse struct {
 	Passed         		bool                `json:"passed"`
 	Tests          		[]TestCaseResponse  `json:"tests"`
 	TotalTimeTaken  	time.Duration       `json:"totalTimeTaken"`
-	TotalMemoryUsed 	int64             `json:"totalMemoryUsed"`
+	TotalMemoryUsed 	int64             	`json:"totalMemoryUsed"`
 }
 // Server represents the server structure
 
@@ -328,6 +263,7 @@ func (s *Server) ValidateSubmission(c echo.Context) error {
 
 	// End measuring time and memory
 	totalTimeTaken := time.Since(startTime)
+	milliseconds := totalTimeTaken.Milliseconds()
 	if err := syscall.Getrusage(syscall.RUSAGE_SELF, &memEnd); err != nil {
 		log.Println("Failed to get final memory usage:", err)
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to get final memory usage"})
@@ -336,7 +272,7 @@ func (s *Server) ValidateSubmission(c echo.Context) error {
 	totalMemoryUsed := memEnd.Maxrss - memStart.Maxrss
 
 	res.ProblemID = req.ProblemID
-	res.TotalTimeTaken = totalTimeTaken
+	res.TotalTimeTaken = time.Duration(milliseconds)
 	res.TotalMemoryUsed = totalMemoryUsed
 
 	totalPassedCases := 0
@@ -350,4 +286,41 @@ func (s *Server) ValidateSubmission(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, res)
+}
+
+
+func (s *Server) AcceptUserSubmission(c echo.Context) error {
+	panic("implement me")
+}
+
+func predictUserLevel(w http.ResponseWriter, r *http.Request) {
+    if r.Method == http.MethodPost {
+        time := r.FormValue("time")
+        runtime := r.FormValue("runtime")
+
+        // Convert the form values to float
+        timeVal, err := strconv.ParseFloat(time, 64)
+        if err != nil {
+            http.Error(w, "Invalid time value", http.StatusBadRequest)
+            return
+        }
+
+        runtimeVal, err := strconv.ParseFloat(runtime, 64)
+        if err != nil {
+            http.Error(w, "Invalid runtime value", http.StatusBadRequest)
+            return
+        }
+
+        // Call the Python script with time and runtime as arguments
+        cmd := exec.Command("python3", "predict_level.py", fmt.Sprintf("%f", timeVal), fmt.Sprintf("%f", runtimeVal))
+        output, err := cmd.Output()
+        if err != nil {
+            log.Fatal(err)
+        }
+
+        // Return the predicted level as response
+        fmt.Fprintf(w, "Predicted Level: %s", string(output))
+    } else {
+        http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+    }
 }
