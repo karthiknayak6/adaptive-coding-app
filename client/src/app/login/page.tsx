@@ -6,6 +6,7 @@ import * as z from "zod";
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { BallTriangle } from "react-loader-spinner";
+import { useRouter } from "next/navigation";
 
 // Define the schema using zod
 const loginSchema = z.object({
@@ -16,6 +17,7 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 const Login: React.FC = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -36,7 +38,12 @@ const Login: React.FC = () => {
       const response = await axios.post("http://localhost:8080/login", data);
       if (response.status === 200) {
         setIsLoggedIn(true);
+        console.log("my token: ", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.token));
         reset();
+
+        router.push("/");
+        location.reload();
       }
     } catch (error) {
       console.error("Login error: ", error);

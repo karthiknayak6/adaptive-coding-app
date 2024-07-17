@@ -1,11 +1,23 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Navbar() {
+  const { user, dispatch } = useAuth();
   const router = useRouter();
+  console.log("STATE: ", user);
 
-  const handleLogOut = async () => {};
+  const handleLogOut = async () => {
+    try {
+      localStorage.removeItem("user");
+      dispatch({ type: "LOGOUT" });
+      router.push("/login");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <nav className=" bg-[#332f2f] shadow-md p-3  w-full">
@@ -18,7 +30,7 @@ export default function Navbar() {
             CodeMastery
           </div>
           <div className="flex space-x-4">
-            {true && (
+            {!user && (
               <a
                 href="/login"
                 className=" hover:text-gray-400 font-medium text-orange-100 text-lg"
@@ -27,7 +39,7 @@ export default function Navbar() {
               </a>
             )}
 
-            {false && (
+            {user && (
               <a
                 onClick={handleLogOut}
                 className=" hover:text-gray-400 text-red-600 font-semibold text-lg cursor-pointer"

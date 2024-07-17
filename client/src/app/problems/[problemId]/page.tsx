@@ -7,6 +7,7 @@ import TestCase from "@/components/TestCase";
 import axios from "axios";
 import Congratulations from "@/components/Congratulations";
 import Loading from "@/components/Loading";
+import { useAuth } from "@/hooks/useAuth";
 
 let backendUrl = "http://localhost:8080";
 
@@ -48,6 +49,7 @@ export interface ProblemResponse {
 const Page: React.FC = () => {
   const params = useParams();
   const problemId = params.problemId;
+  const { user, dispatch } = useAuth();
 
   console.log("ProblemId: ", problemId);
   const [CodeSeg, setCodeSeg] = useState<string>("");
@@ -66,7 +68,14 @@ const Page: React.FC = () => {
     if (!problemId) return; // Ensure problemId is available
     setLoading(true);
     try {
-      const response = await axios.get(`${backendUrl}/suggest/${problemId}`);
+      const response = await axios.get(
+        `${backendUrl}/api/suggest/${problemId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user}`,
+          },
+        }
+      );
       setProblem(response.data);
       if (response.data.test_cases.length > 0) {
         setTestCase(response.data.test_cases[0]);
@@ -131,10 +140,18 @@ const Page: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(`${backendUrl}/submission`, {
-        problemId: problemId,
-        submission: submission,
-      });
+      const response = await axios.post(
+        `${backendUrl}/api/submission`,
+        {
+          problemId: problemId,
+          submission: submission,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user}`,
+          },
+        }
+      );
       setLoading(false);
 
       setRes(response.data);
