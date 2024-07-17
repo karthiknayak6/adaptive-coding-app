@@ -13,7 +13,7 @@ interface KeyValue {
   Value: number | number[];
 }
 
-interface TestCase {
+export interface TestCase {
   test_case_id: number;
   input: KeyValue[];
   output: number[];
@@ -28,6 +28,21 @@ interface Problem {
   test_cases: TestCase[];
 }
 
+export interface TestResponse {
+  testcaseid: number;
+  passed: boolean;
+  actualOutput: string;
+  expectedOutput: string;
+}
+
+export interface ProblemResponse {
+  problemId: string;
+  passed: boolean;
+  tests: TestResponse[];
+  totalTimeTaken: number;
+  totalMemoryUsed: number;
+}
+
 const Page: React.FC = () => {
   const params = useParams();
   const problemId = params.problemId;
@@ -40,6 +55,7 @@ const Page: React.FC = () => {
   const [submission, setSubmission] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const [res, setRes] = useState<ProblemResponse>();
 
   const init = async () => {
     if (!problemId) return; // Ensure problemId is available
@@ -87,12 +103,18 @@ const Page: React.FC = () => {
     console.log("my sub", submission);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(`${backendUrl}/submission`, {
         problemId: problemId,
         submission: submission,
       });
+      setLoading(false);
+
+      setRes(response.data);
+
       console.log(response.data);
     } catch (error) {
       console.error("Failed to submit:", error);
@@ -155,6 +177,7 @@ const Page: React.FC = () => {
                   scrollBeyondLastLine: false,
                   fontSize: 16,
                 }}
+                value={submission}
                 theme="vs-dark"
                 defaultLanguage="python"
                 defaultValue={problem.boilerplate}
@@ -165,7 +188,12 @@ const Page: React.FC = () => {
                 <ButtonOrange className="w-20 py-0  h-7 text-sm ml-3">
                   Run
                 </ButtonOrange>
-                <ButtonOrange className="w-20 py-0  h-7 text-sm">
+                <ButtonOrange
+                  onClick={() => {
+                    setSubmission(problem.boilerplate);
+                  }}
+                  className="w-20 py-0  h-7 text-sm"
+                >
                   Reset
                 </ButtonOrange>
                 <ButtonOrange
@@ -185,25 +213,43 @@ const Page: React.FC = () => {
                   </div>
                   <div>
                     <div className="bg-[#433e3e]  pt-3 pl-8 pb-3 flex justify-evenly">
-                      {problem.test_cases.map((tc, index) => (
-                        <div
-                          key={index}
-                          onClick={() => {
-                            setTestCase(tc);
-                            setSelectedTestCase(index);
-                          }}
-                          className={`py-[6px] text-sm rounded-full px-3 cursor-pointer hover:bg-orange-400 ${
-                            selectedTestCase === index
-                              ? "bg-orange-500 text-white"
-                              : "bg-orange-300 text-black"
-                          }`}
-                        >
-                          Test Case {index + 1}
-                        </div>
-                      ))}
+                      {problem.test_cases.map((tc, index) => {
+                        const isSelected = selectedTestCase === index;
+                        const isPassed = res?.tests[index].passed;
+
+                        let bgColor = "";
+                        if (res) {
+                          bgColor = isSelected
+                            ? isPassed
+                              ? "bg-green-800"
+                              : "bg-red-800"
+                            : isPassed
+                            ? "bg-green-500"
+                            : "bg-red-500";
+                        } else {
+                          bgColor = isSelected
+                            ? "bg-orange-500"
+                            : "bg-orange-300";
+                        }
+
+                        return (
+                          <div
+                            key={index}
+                            onClick={() => {
+                              setTestCase(tc);
+                              setSelectedTestCase(index);
+                            }}
+                            className={`py-[6px] text-sm rounded-full px-3 cursor-pointer hover:bg-orange-400 ${bgColor} ${
+                              isSelected ? "text-white" : "text-black"
+                            }`}
+                          >
+                            Test Case {index + 1}
+                          </div>
+                        );
+                      })}
                     </div>
                     <div className="">
-                      <TestCase testCase={testCase} />
+                      <TestCase testCase={testCase} res={res} />
                     </div>
                   </div>
                 </div>
