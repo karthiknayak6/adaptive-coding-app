@@ -143,6 +143,7 @@ type SubmissionResponse struct {
 	Tests          		[]TestCaseResponse  `json:"tests"`
 	TotalTimeTaken  	time.Duration       `json:"totalTimeTaken"`
 	TotalMemoryUsed 	int64             	`json:"totalMemoryUsed"`
+	NextProblemId  		int              `json:"nextProblemId"`
 }
 // Server represents the server structure
 
@@ -309,14 +310,19 @@ func (s *Server) ValidateSubmission(c echo.Context) error {
 	}
 
 	level, err := predictUserLevel(problem.Difficulty, req.UserTime, float64(totalTimeTaken))
-	lvmap := map[string]string{"Beginner": "Easy", "Intermediate": "Medium", "Expert": "Hard"}
+	
 
-	fmt.Println("Predicted Level: ", level)
-
-	fmt.Println("Predicted Level: ", lvmap[level])
 	if err != nil {
 		log.Println("Failed to predict user level:", err)
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to predict user level"})
+	}
+
+	if level == "Beginner" {
+		res.NextProblemId = problem.ID + 1
+	} else if level == "Intermediate" {
+		res.NextProblemId = problem.ID + 2
+	} else if level == "Expert" {
+		res.NextProblemId = problem.ID + 3
 	}
 
 
@@ -332,54 +338,19 @@ type AcceptUserSubmissionRequest struct {
 	RunTime   float64 `json:"runTime"`
 }
 
-// func (s *Server) AcceptUserSubmission(c echo.Context) error {
 
-// 	var req AcceptUserSubmissionRequest
-// 	if err := c.Bind(&req); err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request payload"})
-// 	}
-
-// 	collection := s.db.GetCollection("users")
-// 	var user models.User
-// 	err := collection.FindOne(context.Background(), bson.M{"username": c.Get("username")}).Decode(&user)
-// 	if err != nil {
-// 		log.Println("Failed to find user:", err)
-// 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to find user"})
-// 	}
-
-// 	collection = s.db.GetCollection("problems")
-// 	var problem models.Problem
-// 	err = collection.FindOne(context.Background(), bson.M{"id": req.ProblemID}).Decode(&problem)
-// 	if err != nil {
-// 		log.Println("Failed to find problem:", err)
-// 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to find problem"})
-// 	}
-// 	var problemDetails models.ProblemDetails
-
-// 	problemDetails.ProblemID = problem.ID
-// 	problemDetails.UserID = user.ID
-// 	problemDetails.SolvedAt = time.Now()
-// 	problemDetails.TimeTaken = req.TimeTaken
-// 	problemDetails.Runtime = req.RunTime
-// 	problemDetails.DifficultyLevel = problem.Difficulty
-
-
-// 	collection = s.db.GetCollection("problem_details")
-// 	_, err = collection.InsertOne(context.Background(), problemDetails)
-// 	if err != nil {
-// 		log.Println("Failed to insert problem details:", err)
-// 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to insert problem details"})
-// 	}
-
-	
-
-
-// 	return c.JSON(http.StatusOK, user)
-	
-// }
 
 func predictUserLevel(difficulty string, timeTaken float64, runtime float64) (string,error) {
 	fmt.Println("Function call")
+	fmt.Println("time taken", timeTaken)
+	fmt.Println("runtime", runtime)
+
+	timeTaken = timeTaken / 60000
+	runtime = runtime / 1000000
+
+	fmt.Println("time taken", timeTaken)
+	fmt.Println("runtime", runtime)
+
 
 	// Prepare the command
 	cmd := exec.Command("python3", "/home/karthik/adaptive-coding-app/server/internal/scripts/predict_level.py", fmt.Sprintf("%f", timeTaken), fmt.Sprintf("%f", runtime))
@@ -391,11 +362,14 @@ func predictUserLevel(difficulty string, timeTaken float64, runtime float64) (st
 		return "", err
 	}
 
+	fmt.Println("mmmm: ", string(output))
+
 	// Print the predicted level and difficulty
 	fmt.Printf("Predicted Level: %s", string(output))
 	fmt.Println("difficulty: ", difficulty)
-
-	return string(output), nil
+	
+	
+	return strings.TrimSpace(string(output)), nil
 }
 
 

@@ -3,7 +3,7 @@ import numpy as np
 import sys
 
 def predict_level(time, runtime):
-    print("Workingggg")
+   
     with open('/home/karthik/adaptive-coding-app/server/internal/scripts/clustering_model.pkl', 'rb') as f:
         data = pickle.load(f)
 
@@ -24,5 +24,5 @@ def predict_level(time, runtime):
 if __name__ == "__main__":
     time = float(sys.argv[1])
     runtime = float(sys.argv[2])
-    level = predict_level(time, runtime)
+    level = predict_level(int(time), int(runtime))
     print(level)

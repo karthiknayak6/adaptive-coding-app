@@ -44,6 +44,7 @@ export interface ProblemResponse {
   tests: TestResponse[];
   totalTimeTaken: number;
   totalMemoryUsed: number;
+  nextProblemId: number;
 }
 
 const Page: React.FC = () => {
@@ -62,6 +63,7 @@ const Page: React.FC = () => {
   const [showPassed, setShowPassed] = useState<boolean>(false);
   const [elapsedTime, setElapsedTime] = useState<number>(0);
   const [finalTime, setFinalTime] = useState<number>(0);
+  const [customTime, setCustomTime] = useState<string>("0");
   let user = localStorage.getItem("user");
   if (user) {
     user = JSON.parse(user);
@@ -174,6 +176,15 @@ const Page: React.FC = () => {
     }
   };
 
+  const handleCustomTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomTime(e.target.value);
+    setElapsedTime(parseInt(e.target.value) * 1000);
+  };
+
+  const applyCustomTime = () => {
+    setElapsedTime(parseInt(customTime) * 1000);
+  };
+
   return (
     <div className="relative">
       {loading ? (
@@ -239,11 +250,7 @@ const Page: React.FC = () => {
                 defaultValue={problem.boilerplate}
                 onChange={handleEditorChange}
               />
-
               <div className="flex space-x-4  mt-3 rounded-full py-2 bg-[#332f2f]">
-                {/* <ButtonOrange className="w-20 py-0  h-7 text-sm ml-3">
-                  Run
-                </ButtonOrange> */}
                 <ButtonOrange
                   onClick={() => {
                     setSubmission(problem.boilerplate);
@@ -260,6 +267,20 @@ const Page: React.FC = () => {
                 >
                   Submit
                 </ButtonOrange>
+                <div className="flex items-center ">
+                  <input
+                    type="number"
+                    value={customTime}
+                    onChange={handleCustomTimeChange}
+                    className="w-20 py-0 h-7 text-sm bg-[#3c3939] rounded-full pl-4"
+                  />
+                  {/* <ButtonOrange
+                    className="w-20 py-0 h-7 text-sm ml-3"
+                    onClick={applyCustomTime}
+                  >
+                    Set Timer
+                  </ButtonOrange> */}
+                </div>
               </div>
 
               {testCase && (

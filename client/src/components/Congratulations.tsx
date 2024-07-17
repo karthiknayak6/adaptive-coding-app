@@ -17,7 +17,7 @@ export default function Congratulations({
   const router = useRouter();
   const handleNextProblem = () => {
     if (res && res.problemId) {
-      router.push(`/problems/${parseInt(res?.problemId) + 1}`);
+      router.push(`/problems/${res.nextProblemId}`);
     }
   };
 
