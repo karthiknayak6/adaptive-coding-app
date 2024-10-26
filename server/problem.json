@@ -189,7 +189,7 @@
       "title": "Rotate Array",
       "description": "Rotate an array to the right by a given number of steps.",
       "difficulty": "Medium",
-      "boilerplate": "import argparse\nimport ast\n\ndef rotateArray(arr, k):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nparser.add_argument('arg2', help='The second argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = rotateArray(list_from_string, int(args.arg2))\nprint(result)",
+      "boilerplate": "import argparse\nimport ast\n\ndef rotateArray(arr, k):\n    # Write your code here\n    k %= len(arr)\n    return arr[-k:] + arr[:-k]\n\n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', type=str, help='The first argument (array as a string)')\nparser.add_argument('arg2', type=int, help='The second argument (rotation steps)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1.replace(' ', ','))\nresult = rotateArray(list_from_string, args.arg2)\nprint(result)",
       "test_cases": [
         {
           "test_case_id": 1,
@@ -217,6 +217,7 @@
         }
       ]
     },
+
     {
       "id": 8,
       "title": "Merge Sorted Arrays",
