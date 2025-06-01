@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" className=" ">
       <AuthContextProvider>
-        <body className="{inter.className} bg-[#212121]">
+        <body className="{inter.className} c">
           <nav>
             <NavBar />
           </nav>

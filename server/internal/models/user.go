@@ -15,7 +15,7 @@ type User struct {
 	Password  string             `bson:"password" json:"password"`
 	CreatedAt time.Time          `bson:"created_at" json:"created_at"`
 	UpdatedAt time.Time          `bson:"updated_at" json:"updated_at"`
-	SolvedProblems []int64 `bson:"solved_problems" json:"solved_problems"`
+
 }
 
 
