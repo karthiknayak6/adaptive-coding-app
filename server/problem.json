@@ -183,41 +183,36 @@
         }
       ]
     },
-
     {
       "id": 7,
-      "title": "Rotate Array",
-      "description": "Rotate an array to the right by a given number of steps.",
+      "title": "Find All Duplicates in an Array",
+      "description": "Given an array of integers where 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once. Find all the elements that appear twice in this array.",
       "difficulty": "Medium",
-      "boilerplate": "import argparse\nimport ast\n\ndef rotateArray(arr, k):\n    # Write your code here\n    k %= len(arr)\n    return arr[-k:] + arr[:-k]\n\n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', type=str, help='The first argument (array as a string)')\nparser.add_argument('arg2', type=int, help='The second argument (rotation steps)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1.replace(' ', ','))\nresult = rotateArray(list_from_string, args.arg2)\nprint(result)",
+      "boilerplate": "import argparse\nimport ast\n\ndef findDuplicates(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = findDuplicates(list_from_string)\nprint(result)",
       "test_cases": [
         {
           "test_case_id": 1,
           "input": {
-            "arr": [1, 2, 3, 4, 5],
-            "k": 2
+            "arr": [4, 3, 2, 7, 8, 2, 3, 1]
           },
-          "output": [4, 5, 1, 2, 3]
+          "output": [2, 3]
         },
         {
           "test_case_id": 2,
           "input": {
-            "arr": [-1, -100, 3, 99],
-            "k": 2
+            "arr": [1, 1, 2]
           },
-          "output": [3, 99, -1, -100]
+          "output": [1]
         },
         {
           "test_case_id": 3,
           "input": {
-            "arr": [1, 2],
-            "k": 3
+            "arr": [1]
           },
-          "output": [2, 1]
+          "output": []
         }
       ]
     },
-
     {
       "id": 8,
       "title": "Merge Sorted Arrays",
@@ -374,6 +369,1245 @@
             "arr": [-2, 3, -4]
           },
           "output": 24
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Find the Minimum Element",
+      "description": "Given an array of integers, return the minimum element.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef findMinElement(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = findMinElement(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 4, 5]
+          },
+          "output": 1
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [-1, -2, -3, -4, -5]
+          },
+          "output": -5
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [100, 200, 300, 400, 500]
+          },
+          "output": 100
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Check if Array is Sorted",
+      "description": "Given an array of integers, return True if it is sorted in ascending order, False otherwise.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef isSorted(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = isSorted(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 4, 5]
+          },
+          "output": true
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [5, 4, 3, 2, 1]
+          },
+          "output": false
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [1, 3, 2, 4, 5]
+          },
+          "output": false
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Find the Second Largest Element",
+      "description": "Given an array of integers, return the second largest element. Assume the array has at least two distinct elements.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef findSecondLargest(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = findSecondLargest(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 4, 5]
+          },
+          "output": 4
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [10, 5, 10]
+          },
+          "output": 5
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [1, 3, 2, 4, 5]
+          },
+          "output": 4
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Calculate Average",
+      "description": "Given an array of integers, return the average of its elements.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef calculateAverage(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = calculateAverage(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 4, 5]
+          },
+          "output": 3.0
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [10, 20, 30]
+          },
+          "output": 20.0
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [-1, -2, -3]
+          },
+          "output": -2.0
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Find Index of Element",
+      "description": "Given an array of integers and a target integer, return the index of the first occurrence of the target in the array. If not found, return -1.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef findIndex(arr, target):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nparser.add_argument('arg2', help='The second argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = findIndex(list_from_string, int(args.arg2))\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 4, 5],
+            "target": 3
+          },
+          "output": 2
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [10, 20, 30],
+            "target": 25
+          },
+          "output": -1
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [5, 5, 5],
+            "target": 5
+          },
+          "output": 0
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Contains Duplicates",
+      "description": "Given an array of integers, return True if there are any duplicates, False otherwise.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef containsDuplicates(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = containsDuplicates(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 4, 5]
+          },
+          "output": false
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [1, 2, 2, 3, 4]
+          },
+          "output": true
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [5, 5, 5, 5]
+          },
+          "output": true
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Count Elements Greater Than",
+      "description": "Given an array of integers and a target integer, return the number of elements in the array that are greater than the target.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef countGreaterThan(arr, target):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nparser.add_argument('arg2', help='The second argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = countGreaterThan(list_from_string, int(args.arg2))\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 4, 5],
+            "target": 3
+          },
+          "output": 2
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [10, 20, 30],
+            "target": 15
+          },
+          "output": 2
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [5, 5, 5],
+            "target": 5
+          },
+          "output": 0
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Swap Elements",
+      "description": "Given an array of integers and two indices, swap the elements at those indices and return the modified array. Assume indices are valid.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef swapElements(arr, index1, index2):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', type=str, help='The array as a string')\nparser.add_argument('arg2', type=int, help='First index')\nparser.add_argument('arg3', type=int, help='Second index')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1.replace(' ', ','))\nresult = swapElements(list_from_string, args.arg2, args.arg3)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 4, 5],
+            "index1": 1,
+            "index2": 3
+          },
+          "output": [1, 4, 3, 2, 5]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [10, 20, 30],
+            "index1": 0,
+            "index2": 2
+          },
+          "output": [30, 20, 10]
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [5],
+            "index1": 0,
+            "index2": 0
+          },
+          "output": [5]
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "title": "Sum of Even Elements",
+      "description": "Given an array of integers, return the sum of all even elements.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef sumOfEvenElements(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = sumOfEvenElements(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 4, 5]
+          },
+          "output": 6
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [2, 4, 6, 8]
+          },
+          "output": 20
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [1, 3, 5]
+          },
+          "output": 0
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "title": "Product of Elements",
+      "description": "Given an array of integers, return the product of all its elements.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef productOfElements(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = productOfElements(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 4]
+          },
+          "output": 24
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [5, 5, 5]
+          },
+          "output": 125
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [0, 1, 2]
+          },
+          "output": 0
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "title": "Is Palindrome Array",
+      "description": "Given an array of integers, return True if it reads the same forwards and backwards, False otherwise.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef isPalindrome(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = isPalindrome(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 2, 1]
+          },
+          "output": true
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [1, 2, 3, 4, 5]
+          },
+          "output": false
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [5, 5, 5, 5]
+          },
+          "output": true
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "title": "Frequency of Elements",
+      "description": "Given an array of integers, return a dictionary where the keys are the unique elements and the values are their frequencies.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef frequencyOfElements(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = frequencyOfElements(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 2, 3, 3, 3]
+          },
+          "output": { "1": 1, "2": 2, "3": 3 }
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [4, 4, 4, 4]
+          },
+          "output": { "4": 4 }
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [1, 2, 3, 4, 5]
+          },
+          "output": { "1": 1, "2": 1, "3": 1, "4": 1, "5": 1 }
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "title": "Rotate Left by One",
+      "description": "Given an array of integers, rotate it to the left by one position and return the new array.",
+      "difficulty": "Easy",
+      "boilerplate": "import argparse\nimport ast\n\ndef rotateLeftByOne(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = rotateLeftByOne(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 4, 5]
+          },
+          "output": [2, 3, 4, 5, 1]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [10]
+          },
+          "output": [10]
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [1, 2]
+          },
+          "output": [2, 1]
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "title": "Find Kth Largest Element",
+      "description": "Given an array of integers and an integer k, return the kth largest element in the array.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef findKthLargest(arr, k):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', type=str, help='The array as a string')\nparser.add_argument('arg2', type=int, help='The value of k')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1.replace(' ', ','))\nresult = findKthLargest(list_from_string, args.arg2)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [3, 2, 1, 5, 6, 4],
+            "k": 2
+          },
+          "output": 5
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [3, 2, 3, 1, 2, 4, 5, 5, 6],
+            "k": 4
+          },
+          "output": 4
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [1],
+            "k": 1
+          },
+          "output": 1
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "title": "Merge Overlapping Intervals",
+      "description": "Given a list of intervals where each interval is a list of two integers, merge all overlapping intervals and return the list of merged intervals.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef mergeIntervals(intervals):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', type=str, help='The list of intervals as a string')\nargs = parser.parse_args()\nintervals = ast.literal_eval(args.arg1)\nresult = mergeIntervals(intervals)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "intervals": [
+              [1, 3],
+              [2, 6],
+              [8, 10],
+              [15, 18]
+            ]
+          },
+          "output": [
+            [1, 6],
+            [8, 10],
+            [15, 18]
+          ]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "intervals": [
+              [1, 4],
+              [4, 5]
+            ]
+          },
+          "output": [[1, 5]]
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "intervals": [
+              [1, 2],
+              [3, 4],
+              [5, 6]
+            ]
+          },
+          "output": [
+            [1, 2],
+            [3, 4],
+            [5, 6]
+          ]
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "title": "Maximum Subarray Sum",
+      "description": "Find the maximum sum of a contiguous subarray within an array.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef maxSubarraySum(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = maxSubarraySum(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+          },
+          "output": 6
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [1]
+          },
+          "output": 1
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [-1, -2, -3]
+          },
+          "output": -1
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "title": "Move Zeros to End",
+      "description": "Move all zeros in the array to the end while maintaining the relative order of non-zero elements.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef moveZeros(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = moveZeros(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [0, 1, 0, 3, 12]
+          },
+          "output": [1, 3, 12, 0, 0]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [0, 0, 1, 2]
+          },
+          "output": [1, 2, 0, 0]
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [1, 2, 3]
+          },
+          "output": [1, 2, 3]
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "title": "Longest Increasing Subarray",
+      "description": "Find the length of the longest subarray that is strictly increasing.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef longestIncreasingSubarray(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = longestIncreasingSubarray(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 2, 4, 5]
+          },
+          "output": 3
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [5, 4, 3, 2, 1]
+          },
+          "output": 1
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [1, 3, 2, 4, 6]
+          },
+          "output": 3
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "title": "Array Intersection",
+      "description": "Given two arrays, return their intersection (elements common to both).",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef arrayIntersection(arr1, arr2):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nparser.add_argument('arg2', help='The second argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string1 = ast.literal_eval(args.arg1[0].replace(' ', ','))\nlist_from_string2 = ast.literal_eval(args.arg2.replace(' ', ','))\nresult = arrayIntersection(list_from_string1, list_from_string2)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr1": [1, 2, 3, 4],
+            "arr2": [2, 4, 6, 8]
+          },
+          "output": [2, 4]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr1": [1, 2, 3],
+            "arr2": [4, 5, 6]
+          },
+          "output": []
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr1": [1, 1, 1],
+            "arr2": [1, 1]
+          },
+          "output": [1]
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "title": "Majority Element",
+      "description": "Find the majority element that appears more than n/2 times in the array.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef majorityElement(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = majorityElement(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [3, 2, 3]
+          },
+          "output": 3
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [2, 2, 1, 1, 1, 2, 2]
+          },
+          "output": 2
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [1, 1, 1, 2]
+          },
+          "output": 1
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "title": "Sort Colors",
+      "description": "Sort an array containing 0s, 1s, and 2s in-place and return the sorted array.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef sortColors(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = sortColors(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [2, 0, 2, 1, 1, 0]
+          },
+          "output": [0, 0, 1, 1, 2, 2]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [2, 0, 1]
+          },
+          "output": [0, 1, 2]
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [1, 0]
+          },
+          "output": [0, 1]
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "title": "Smallest Missing Positive",
+      "description": "Find the smallest missing positive integer in an unsorted array.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef smallestMissingPositive(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = smallestMissingPositive(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 0]
+          },
+          "output": 3
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [3, 4, -1, 1]
+          },
+          "output": 2
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [7, 8, 9, 11]
+          },
+          "output": 1
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "title": "Peak Element",
+      "description": "Find a peak element in an array (an element that is greater than its neighbors).",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef findPeakElement(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = findPeakElement(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 1]
+          },
+          "output": 2
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [1, 2, 1, 3, 5, 6, 4]
+          },
+          "output": 1
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [1]
+          },
+          "output": 0
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "title": "Subarrays with Given Sum",
+      "description": "Find the number of subarrays that sum to a given value.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef subarraysWithSum(arr, target):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', type=str, help='The array as a string')\nparser.add_argument('arg2', type=int, help='The target sum')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1.replace(' ', ','))\nresult = subarraysWithSum(list_from_string, args.arg2)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 2, 3, 4],
+            "target": 7
+          },
+          "output": 1
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [1, -1, 0],
+            "target": 0
+          },
+          "output": 3
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [10, 20, 30],
+            "target": 50
+          },
+          "output": 1
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "title": "Next Greater Element",
+      "description": "For each element in the array, find the next greater element to its right. Return -1 if none exists.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef nextGreaterElement(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = nextGreaterElement(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [4, 5, 2, 25]
+          },
+          "output": [5, 25, 25, -1]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [13, 7, 6, 12]
+          },
+          "output": [-1, 12, 12, -1]
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [1, 2, 3]
+          },
+          "output": [2, 3, -1]
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "title": "Maximum Difference",
+      "description": "Find the maximum difference between two elements where the larger element appears after the smaller one.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef maxDifference(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = maxDifference(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [2, 3, 10, 6, 4, 8, 1]
+          },
+          "output": 8
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [7, 9, 5, 6, 3, 2]
+          },
+          "output": 2
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [10, 20, 30]
+          },
+          "output": 20
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "title": "Find Duplicate",
+      "description": "Find the duplicate number in an array containing numbers from 1 to n with one duplicate.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef findDuplicate(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = findDuplicate(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [1, 3, 4, 2, 2]
+          },
+          "output": 2
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [3, 1, 3, 4, 2]
+          },
+          "output": 3
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [1, 1]
+          },
+          "output": 1
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "title": "Maximum Sum Subarray with Unique Elements",
+      "description": "Find the maximum sum of a subarray with unique elements.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef maxSumUniqueSubarray(arr):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = maxSumUniqueSubarray(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [4, 2, 4, 5, 6]
+          },
+          "output": 15
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [1, 2, 1, 3]
+          },
+          "output": 6
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [5, 5, 5]
+          },
+          "output": 5
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "title": "Group Anagrams",
+      "description": "Given an array of strings, group the anagrams together and return the list of grouped anagrams.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef groupAnagrams(strs):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', type=str, help='The array of strings')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1)\nresult = groupAnagrams(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "strs": ["eat", "tea", "tan", "ate", "nat", "bat"]
+          },
+          "output": [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "strs": [""]
+          },
+          "output": [[""]]
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "strs": ["abc", "cba", "cab"]
+          },
+          "output": [["abc", "cba", "cab"]]
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "title": "Spiral Matrix",
+      "description": "Given a 2D matrix, return all elements in spiral order.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef spiralOrder(matrix):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', type=str, help='The matrix as a string')\nargs = parser.parse_args()\nmatrix = ast.literal_eval(args.arg1)\nresult = spiralOrder(matrix)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "matrix": [
+              [1, 2, 3],
+              [4, 5, 6],
+              [7, 8, 9]
+            ]
+          },
+          "output": [1, 2, 3, 6, 9, 8, 7, 4, 5]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "matrix": [
+              [1, 2],
+              [3, 4]
+            ]
+          },
+          "output": [1, 2, 4, 3]
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "matrix": [[1]]
+          },
+          "output": [1]
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "title": "Set Matrix Zeroes",
+      "description": "Given a matrix, if an element is 0, set its entire row and column to 0 and return the modified matrix.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef setMatrixZeroes(matrix):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', type=str, help='The matrix as a string')\nargs = parser.parse_args()\nmatrix = ast.literal_eval(args.arg1)\nresult = setMatrixZeroes(matrix)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "matrix": [
+              [1, 1, 1],
+              [1, 0, 1],
+              [1, 1, 1]
+            ]
+          },
+          "output": [
+            [1, 0, 1],
+            [0, 0, 0],
+            [1, 0, 1]
+          ]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "matrix": [[0, 1]]
+          },
+          "output": [[0, 0]]
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "matrix": [
+              [1, 2],
+              [3, 4]
+            ]
+          },
+          "output": [
+            [1, 2],
+            [3, 4]
+          ]
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "title": "Search in Rotated Sorted Array",
+      "description": "Search for a target in a rotated sorted array and return its index, or -1 if not found.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef searchRotatedArray(arr, target):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', type=str, help='The array as a string')\nparser.add_argument('arg2', type=int, help='The target value')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1.replace(' ', ','))\nresult = searchRotatedArray(list_from_string, args.arg2)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr": [4, 5, 6, 7, 0, 1, 2],
+            "target": 0
+          },
+          "output": 4
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr": [4, 5, 6, 7, 0, 1, 2],
+            "target": 3
+          },
+          "output": -1
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr": [1],
+            "target": 1
+          },
+          "output": 0
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "title": "Container With Most Water",
+      "description": "Given an array representing heights, find two lines that form a container with the most water.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef maxWaterContainer(heights):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = maxWaterContainer(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "heights": [1, 8, 6, 2, 5, 4, 8, 3, 7]
+          },
+          "output": 49
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "heights": [1, 1]
+          },
+          "output": 1
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "heights": [4, 3, 2, 1]
+          },
+          "output": 6
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "title": "Trapping Rain Water",
+      "description": "Given an array representing an elevation map, compute how much water it can trap.",
+      "difficulty": "Medium",
+      "boilerplate": "import argparse\nimport ast\n\ndef trapRainWater(heights):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string = ast.literal_eval(args.arg1[0].replace(' ', ','))\nresult = trapRainWater(list_from_string)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "heights": [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
+          },
+          "output": 6
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "heights": [4, 2, 0, 3, 2, 5]
+          },
+          "output": 9
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "heights": [1, 2, 3]
+          },
+          "output": 0
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "title": "Median of Two Sorted Arrays",
+      "description": "Find the median of two sorted arrays.",
+      "difficulty": "Hard",
+      "boilerplate": "import argparse\nimport ast\n\ndef findMedianSortedArrays(arr1, arr2):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', nargs='+', help='The first argument (can be any type)')\nparser.add_argument('arg2', help='The second argument (can be any type)')\nargs = parser.parse_args()\nlist_from_string1 = ast.literal_eval(args.arg1[0].replace(' ', ','))\nlist_from_string2 = ast.literal_eval(args.arg2.replace(' ', ','))\nresult = findMedianSortedArrays(list_from_string1, list_from_string2)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "arr1": [1, 3],
+            "arr2": [2]
+          },
+          "output": 2.0
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "arr1": [1, 2],
+            "arr2": [3, 4]
+          },
+          "output": 2.5
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "arr1": [],
+            "arr2": [1]
+          },
+          "output": 1.0
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "title": "Regular Expression Matching",
+      "description": "Implement regular expression matching with support for '.' and '*'.",
+      "difficulty": "Hard",
+      "boilerplate": "import argparse\nimport ast\n\ndef isMatch(s, p):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', type=str, help='The string')\nparser.add_argument('arg2', type=str, help='The pattern')\nargs = parser.parse_args()\nresult = isMatch(args.arg1, args.arg2)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "s": "aa",
+            "p": "a*"
+          },
+          "output": true
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "s": "ab",
+            "p": ".*"
+          },
+          "output": true
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "s": "mississippi",
+            "p": "mis*is*ip*."
+          },
+          "output": true
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "title": "Sudoku Solver",
+      "description": "Solve a 9x9 Sudoku puzzle and return the solved board.",
+      "difficulty": "Hard",
+      "boilerplate": "import argparse\nimport ast\n\ndef solveSudoku(board):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', type=str, help='The Sudoku board as a string')\nargs = parser.parse_args()\nboard = ast.literal_eval(args.arg1)\nresult = solveSudoku(board)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "board": [
+              [5, 3, 0, 0, 7, 0, 0, 0, 0],
+              [6, 0, 0, 1, 9, 5, 0, 0, 0],
+              [0, 9, 8, 0, 0, 0, 0, 6, 0],
+              [8, 0, 0, 0, 6, 0, 0, 0, 3],
+              [4, 0, 0, 8, 0, 3, 0, 0, 1],
+              [7, 0, 0, 0, 2, 0, 0, 0, 6],
+              [0, 6, 0, 0, 0, 0, 2, 8, 0],
+              [0, 0, 0, 4, 1, 9, 0, 0, 5],
+              [0, 0, 0, 0, 8, 0, 0, 7, 9]
+            ]
+          },
+          "output": [
+            [5, 3, 4, 6, 7, 8, 9, 1, 2],
+            [6, 7, 2, 1, 9, 5, 3, 4, 8],
+            [1, 9, 8, 3, 4, 2, 5, 6, 7],
+            [8, 5, 9, 7, 6, 1, 4, 2, 3],
+            [4, 2, 6, 8, 5, 3, 7, 9, 1],
+            [7, 1, 3, 9, 2, 4, 8, 5, 6],
+            [9, 6, 1, 5, 3, 7, 2, 8, 4],
+            [2, 8, 7, 4, 1, 9, 6, 3, 5],
+            [3, 4, 5, 2, 8, 6, 1, 7, 9]
+          ]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "board": [
+              [0, 0, 1],
+              [0, 1, 0],
+              [1, 0, 0]
+            ]
+          },
+          "output": [
+            [2, 3, 1],
+            [3, 1, 2],
+            [1, 2, 3]
+          ]
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "board": [[1]]
+          },
+          "output": [[1]]
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "title": "N-Queens",
+      "description": "Solve the N-Queens problem and return one possible configuration of the board.",
+      "difficulty": "Hard",
+      "boilerplate": "import argparse\nimport ast\n\ndef solveNQueens(n):\n    # Write your code here\n    \n# Don't touch the below code!!\nparser = argparse.ArgumentParser(description=\"Process any data types.\")\nparser.add_argument('arg1', type=int, help='The size of the board')\nargs = parser.parse_args()\nresult = solveNQueens(args.arg1)\nprint(result)",
+      "test_cases": [
+        {
+          "test_case_id": 1,
+          "input": {
+            "n": 4
+          },
+          "output": [[".Q.."], ["...Q"], ["Q..."], ["..Q."]]
+        },
+        {
+          "test_case_id": 2,
+          "input": {
+            "n": 1
+          },
+          "output": [["Q"]]
+        },
+        {
+          "test_case_id": 3,
+          "input": {
+            "n": 5
+          },
+          "output": [["Q...."], ["..Q.."], ["....Q"], [".Q..."], ["...Q."]]
         }
       ]
     }

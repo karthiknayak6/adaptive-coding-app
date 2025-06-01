@@ -20,6 +20,56 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+func (s *Server) ProfileHandler(c echo.Context) error {
+	// Extract user ID from the middleware (it's now directly stored in the context)
+	userID := c.Get("user_id")
+	fmt.Println("userID", userID)
+	if userID == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Unauthorized"})
+	}
+
+	// Fetch user details from the database
+	var user models.User
+	collection := s.db.GetCollection("users")
+	ctx := context.Background()
+
+	err := collection.FindOne(ctx, bson.M{"_id": userID}).Decode(&user)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "User not found"})
+	}
+
+	// Fetch solved problems by user ID
+	problemCollection := s.db.GetCollection("problem_details")
+	cursor, err := problemCollection.Find(ctx, bson.M{"user_id": userID})
+	if err != nil {
+		log.Println("Failed to fetch solved problems:", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to fetch solved problems"})
+	}
+	defer cursor.Close(ctx)
+
+	var solvedProblems []models.ProblemDetails
+	for cursor.Next(ctx) {
+		var problem models.ProblemDetails
+		if err := cursor.Decode(&problem); err != nil {
+			log.Println("Failed to decode problem details:", err)
+			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to parse problem details"})
+		}
+		solvedProblems = append(solvedProblems, problem)
+	}
+
+	log.Printf("Found %d solved problems for user %s", len(solvedProblems), userID)
+
+	// Response JSON
+	response := map[string]interface{}{
+		"user":            user,
+		"solved_problems": solvedProblems,
+	}
+
+	fmt.Println("response", response)
+
+	return c.JSON(http.StatusOK, response)
+}
+
 func (s *Server) updateProblems(c echo.Context) error {
 	file, err := os.Open("/home/karthik/adaptive-coding-app/server/problem.json")
 	if err != nil {
@@ -63,19 +113,13 @@ func (s *Server) updateProblems(c echo.Context) error {
 	return c.JSON(http.StatusAccepted, map[string]string{"msg": "success"})
 }
 
-
-
 type CodeRequest struct {
 	Code string `json:"code"`
 }
 
-
-
-
 func (s *Server) SuggestProblem(c echo.Context) error {
 
 	problemId := c.Param("problemId")
-
 
 	collection := s.db.GetCollection("problems")
 	var problem models.Problem
@@ -91,13 +135,9 @@ func (s *Server) SuggestProblem(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to find problem"})
 	}
 
-
 	return c.JSON(http.StatusOK, problem)
 
 }
-
-
-
 
 // KeyValue represents the input key-value pairs for a test case.
 type KeyValue struct {
@@ -107,9 +147,9 @@ type KeyValue struct {
 
 // TestCase represents a test case for a problem
 type TestCase struct {
-	TestCaseID int         				`bson:"testcaseid"`
-	Input      map[string]interface{} 	`bson:"input"`
-	Output     interface{} 				`bson:"output"`
+	TestCaseID int                    `bson:"testcaseid"`
+	Input      map[string]interface{} `bson:"input"`
+	Output     interface{}            `bson:"output"`
 }
 
 // Problem represents a problem document in MongoDB
@@ -123,32 +163,33 @@ type Problem struct {
 
 // SubmissionRequest represents the request payload for a submission
 type SubmissionRequest struct {
-	ProblemID  string `json:"problemId"`
-	Submission string `json:"submission"`
+	ProblemID  string  `json:"problemId"`
+	Submission string  `json:"submission"`
 	UserTime   float64 `json:"userTime"`
 }
 
 type TestCaseResponse struct {
-	TestCaseID 		int    `json:"testcaseid"`
-	Passed     		bool   `json:"passed"`
-	ActualOutput 	string `json:"actualOutput"`
-	ExpectedOutput 	string `json:"expectedOutput"`
-	Error           string `json:"error,omitempty"`
+	TestCaseID     int    `json:"testcaseid"`
+	Passed         bool   `json:"passed"`
+	ActualOutput   string `json:"actualOutput"`
+	ExpectedOutput string `json:"expectedOutput"`
+	Error          string `json:"error,omitempty"`
 }
 
 // SubmissionResponse represents the response payload for a submission
 type SubmissionResponse struct {
-	ProblemID      		string              `json:"problemId"`
-	Passed         		bool                `json:"passed"`
-	Tests          		[]TestCaseResponse  `json:"tests"`
-	TotalTimeTaken  	time.Duration       `json:"totalTimeTaken"`
-	TotalMemoryUsed 	int64             	`json:"totalMemoryUsed"`
-	NextProblemId  		int              `json:"nextProblemId"`
+	ProblemID       string             `json:"problemId"`
+	Passed          bool               `json:"passed"`
+	Tests           []TestCaseResponse `json:"tests"`
+	TotalTimeTaken  time.Duration      `json:"totalTimeTaken"`
+	TotalMemoryUsed int64              `json:"totalMemoryUsed"`
+	NextProblemId   int                `json:"nextProblemId"`
 }
+
 // Server represents the server structure
 
-
 func (s *Server) ValidateSubmission(c echo.Context) error {
+	
 	var req SubmissionRequest
 	var res SubmissionResponse
 
@@ -159,8 +200,6 @@ func (s *Server) ValidateSubmission(c echo.Context) error {
 	if req.ProblemID == "" || req.Submission == "" {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Problem ID and submission are required"})
 	}
-
-	fmt.Println("\n\nreq.ProblemID:", req.ProblemID)
 
 	tmpDir := os.TempDir()
 	pythonCodeFile := filepath.Join(tmpDir, "submission.py")
@@ -184,7 +223,6 @@ func (s *Server) ValidateSubmission(c echo.Context) error {
 		log.Println("Failed to find problem:", err)
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to find problem"})
 	}
-	fmt.Println("Testcases", problem.TestCases)
 
 	// Start measuring time and memory
 	startTime := time.Now()
@@ -226,32 +264,30 @@ func (s *Server) ValidateSubmission(c echo.Context) error {
 		if err != nil {
 			log.Printf("Error executing command: %s, Output: %s", err, output)
 			res.Tests = append(res.Tests, TestCaseResponse{
-				TestCaseID:      testCase.TestCaseID,
-				Passed:          false,
-				ActualOutput:    outputStr,
-				ExpectedOutput:  fmt.Sprint(testCase.Output),
-				Error:           err.Error(),
+				TestCaseID:     testCase.TestCaseID,
+				Passed:         false,
+				ActualOutput:   outputStr,
+				ExpectedOutput: fmt.Sprint(testCase.Output),
+				Error:          err.Error(),
 			})
 			continue
 		}
 
-		// Print the output
-		fmt.Printf("Output: %s\n", outputStr)
 
 		// Convert expected output to string for comparison
-		expectedOutput := fmt.Sprint(testCase.Output) // Convert to string
-		expectedOutput = strings.Trim(expectedOutput, "[]") // Remove square brackets
+		expectedOutput := fmt.Sprint(testCase.Output)                // Convert to string
+		expectedOutput = strings.Trim(expectedOutput, "[]")          // Remove square brackets
 		expectedOutput = strings.ReplaceAll(expectedOutput, ",", "") // Remove commas
 
 		// Normalize actual output
-		actualOutput := strings.Trim(outputStr, "[]") // Remove square brackets
+		actualOutput := strings.Trim(outputStr, "[]")            // Remove square brackets
 		actualOutput = strings.ReplaceAll(actualOutput, ",", "") // Remove commas
 
 		res.Tests = append(res.Tests, TestCaseResponse{
-			TestCaseID:      testCase.TestCaseID,
-			Passed:          actualOutput == expectedOutput,
-			ActualOutput:    actualOutput,
-			ExpectedOutput:  expectedOutput,
+			TestCaseID:     testCase.TestCaseID,
+			Passed:         actualOutput == expectedOutput,
+			ActualOutput:   actualOutput,
+			ExpectedOutput: expectedOutput,
 		})
 
 		if actualOutput == expectedOutput {
@@ -286,12 +322,24 @@ func (s *Server) ValidateSubmission(c echo.Context) error {
 	if totalPassedCases == len(res.Tests) {
 		res.Passed = true
 	}
+	
+	// Get the user information
+	usersCollection := s.db.GetCollection("users")
 	var user models.User
-	err = collection.FindOne(context.Background(), bson.M{"username": c.Get("username")}).Decode(&user)
+	
+	// Get the user ID directly from the context
+	userId := c.Get("user_id")
+	fmt.Println("userId", userId)
+	if userId == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Unauthorized: User not found in context"})
+	}
+	
+	err = usersCollection.FindOne(context.Background(), bson.M{"_id": userId}).Decode(&user)
 	if err != nil {
 		log.Println("Failed to find user:", err)
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to find user"})
 	}
+	
 	var problemDetails models.ProblemDetails
 
 	problemDetails.ProblemID = problem.ID
@@ -301,16 +349,62 @@ func (s *Server) ValidateSubmission(c echo.Context) error {
 	problemDetails.Runtime = float64(totalTimeTaken)
 	problemDetails.DifficultyLevel = problem.Difficulty
 
-
-	collection = s.db.GetCollection("problem_details")
-	_, err = collection.InsertOne(context.Background(), problemDetails)
+	// Save the problem details
+	problemDetailsCollection := s.db.GetCollection("problem_details")
+	_, err = problemDetailsCollection.InsertOne(context.Background(), problemDetails)
 	if err != nil {
 		log.Println("Failed to insert problem details:", err)
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to insert problem details"})
 	}
 
+	// If the problem was successfully solved, add it to the user's solved_problems array
+	if res.Passed {
+		// Check if the problem is already in the user's solved_problems array
+		problemAlreadySolved := false
+		
+		// If solved_problems is nil, it means we need to initialize it
+		if user.SolvedProblems == nil {
+			// Initialize with the current problem only
+			log.Printf("Initializing solved_problems array for user %s with problem ID %d", user.ID.Hex(), problem.ID)
+			_, err = usersCollection.UpdateOne(
+				context.Background(),
+				bson.M{"_id": user.ID},
+				bson.M{"$set": bson.M{"solved_problems": []int64{int64(problem.ID)}}},
+			)
+			if err != nil {
+				log.Println("Failed to initialize user's solved problems:", err)
+				return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to initialize user's solved problems"})
+			}
+			log.Printf("Successfully initialized solved_problems for user %s with problem %d", user.ID.Hex(), problem.ID)
+		} else {
+			// Check if problem is already in the array
+			for _, solvedProblemID := range user.SolvedProblems {
+				if solvedProblemID == int64(problem.ID) {
+					problemAlreadySolved = true
+					break
+				}
+			}
+
+			// If problem isn't already marked as solved, add it to the user's solved_problems array
+			if !problemAlreadySolved {
+				// Update user's solved_problems array
+				_, err = usersCollection.UpdateOne(
+					context.Background(),
+					bson.M{"_id": user.ID},
+					bson.M{"$push": bson.M{"solved_problems": int64(problem.ID)}},
+				)
+				if err != nil {
+					log.Println("Failed to update user's solved problems:", err)
+					return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to update user's solved problems"})
+				}
+				log.Printf("Added problem %d to user's solved problems", problem.ID)
+			}
+		}
+	}
+
 	level, err := predictUserLevel(problem.Difficulty, req.UserTime, float64(totalTimeTaken))
-	
+
+	fmt.Println("LEVEL: ", level)
 
 	if err != nil {
 		log.Println("Failed to predict user level:", err)
@@ -325,22 +419,17 @@ func (s *Server) ValidateSubmission(c echo.Context) error {
 		res.NextProblemId = problem.ID + 3
 	}
 
-
-
 	return c.JSON(http.StatusOK, res)
 }
 
-
 type AcceptUserSubmissionRequest struct {
-	ProblemID string `json:"problemId"`
-	Submission string `json:"submission"`
-	TimeTaken float64 `json:"timeTaken"`
-	RunTime   float64 `json:"runTime"`
+	ProblemID  string  `json:"problemId"`
+	Submission string  `json:"submission"`
+	TimeTaken  float64 `json:"timeTaken"`
+	RunTime    float64 `json:"runTime"`
 }
 
-
-
-func predictUserLevel(difficulty string, timeTaken float64, runtime float64) (string,error) {
+func predictUserLevel(difficulty string, timeTaken float64, runtime float64) (string, error) {
 	fmt.Println("Function call")
 	fmt.Println("time taken", timeTaken)
 	fmt.Println("runtime", runtime)
@@ -351,9 +440,11 @@ func predictUserLevel(difficulty string, timeTaken float64, runtime float64) (st
 	fmt.Println("time taken", timeTaken)
 	fmt.Println("runtime", runtime)
 
-
 	// Prepare the command
-	cmd := exec.Command("python3", "/home/karthik/adaptive-coding-app/server/internal/scripts/predict_level.py", fmt.Sprintf("%f", timeTaken), fmt.Sprintf("%f", runtime))
+	cmd := exec.Command("/home/karthik/adaptive-coding-app/server/internal/scripts/env/bin/python3",
+		"/home/karthik/adaptive-coding-app/server/internal/scripts/predict_level.py",
+		fmt.Sprintf("%f", timeTaken),
+		fmt.Sprintf("%f", runtime))
 
 	// Run the command and capture the output
 	output, err := cmd.CombinedOutput()
@@ -367,11 +458,9 @@ func predictUserLevel(difficulty string, timeTaken float64, runtime float64) (st
 	// Print the predicted level and difficulty
 	fmt.Printf("Predicted Level: %s", string(output))
 	fmt.Println("difficulty: ", difficulty)
-	
-	
+
 	return strings.TrimSpace(string(output)), nil
 }
-
 
 // package models
 

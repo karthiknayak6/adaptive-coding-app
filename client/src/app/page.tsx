@@ -22,7 +22,7 @@ export default function Home() {
       <div className="bg-[#332f2f] shadow-lg rounded-3xl py-8 mt-7 flex flex-col justify-center text-orange-100 ">
         <div className="flex mt-6 justify-center items-center mx-10">
           <div className=" text-lg ml-10">
-            <h2 className="text-5xl font-bold mb-4">Welcome, Karthik!</h2>
+            <h2 className="text-5xl font-bold mb-4">Welcome!</h2>
 
             <p className="mt-6 text-lg">
               Join CodeMastery today and experience a personalized coding

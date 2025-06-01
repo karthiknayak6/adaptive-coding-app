@@ -17,12 +17,17 @@ type Server struct {
 }
 
 func NewServer() (*http.Server, error) {
-	port, err := strconv.Atoi(os.Getenv("PORT"))
+	portStr := os.Getenv("PORT")
+	if portStr == "" {
+		portStr = "8080" // Default port
+	}
+	port, err := strconv.Atoi(portStr)
 	if err != nil {
 		return nil, fmt.Errorf("invalid port: %v", err)
 	}
 
 	dbService, err := database.New()
+
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize database service: %v", err)
 	}

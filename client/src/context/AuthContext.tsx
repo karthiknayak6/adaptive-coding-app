@@ -1,12 +1,24 @@
 "use client";
 import React, { createContext, useReducer, useEffect } from "react";
 
-type Action = { type: "LOGIN"; payload: any } | { type: "LOGOUT" };
+type User = {
+  id: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  created_at: string;
+  is_admin: boolean;
+  solved_problems: number[];
+  token: string;
+} | null;
+
+type Action = { type: "LOGIN"; payload: User } | { type: "LOGOUT" };
 type Dispatch = (action: Action) => void;
-type State = { user: any };
+type State = { user: User };
 
 export const AuthContext = createContext<{
-  user: string;
+  user: User;
   dispatch: Dispatch;
 } | null>(null);
 

@@ -15,13 +15,16 @@ type User struct {
 	Password  string             `bson:"password" json:"password"`
 	CreatedAt time.Time          `bson:"created_at" json:"created_at"`
 	UpdatedAt time.Time          `bson:"updated_at" json:"updated_at"`
-
+	SolvedProblems []int64 `bson:"solved_problems" json:"solved_problems"`
 }
+
+
+
 
 type ProblemDetails struct {
     ID              primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
     UserID          primitive.ObjectID `bson:"user_id" json:"user_id"`
-    ProblemID       int `bson:"problem_id" json:"problem_id"`
+    ProblemID       int 				`bson:"problem_id" json:"problem_id"`
     SolvedAt        time.Time          `bson:"solved_at" json:"solved_at"`
     TimeTaken       float64            `bson:"time_taken" json:"time_taken"`
     Runtime         float64            `bson:"runtime" json:"runtime"`

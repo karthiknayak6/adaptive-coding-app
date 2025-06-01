@@ -7,6 +7,7 @@ import (
 
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 
@@ -38,6 +39,15 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
         }
 
         c.Set("user", claims)
+        
+        // Convert user ID from string to ObjectID and set it directly in context
+        if claims.UserID != "" {
+            objID, err := primitive.ObjectIDFromHex(claims.UserID)
+            if err == nil {
+                c.Set("user_id", objID)
+            }
+        }
+        
         return next(c)
     }
 }

@@ -73,7 +73,6 @@ const Page: React.FC = () => {
     if (!problemId) return;
     setLoading(true);
     try {
-      console.log("tears", user);
       const response = await axios.get(
         `${backendUrl}/api/suggest/${problemId}`,
         {
